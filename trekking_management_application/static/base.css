@@ -1,0 +1,38 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    background-color: #AFAC3C;
+}
+#header {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 100vw;
+    height: 7vh;
+    background-color: #3F5B24;
+    color: white;
+    padding: 3vw;
+}
+
+#app-header-name {
+    font-family: 'Poppins';
+    margin-left: 2vw;
+    font-weight: bolder;
+}
+
+
+/* for Desktops and laptops */
+@media (min-width: 1024px) {
+    #header {
+        height: 5vh;
+    }
+    #app-header-name {
+        font-size: x-large;
+    }
+    .material-symbols-outlined{
+        font-size: 40px;
+    }
+}

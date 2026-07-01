@@ -1,0 +1,142 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #AFAC3C;
+    height: 100vh;
+}
+#register-page-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 93vh;
+}
+
+#register-box {
+    width: 100vw;
+    height: 93vh;
+    font-size: x-large;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Poppins';
+    background-color: #F7F5B7;
+    border-bottom-left-radius: 0vw; 
+    border-bottom-right-radius: 0vw;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+    padding: 3vh;
+}
+
+#heading {
+    font-weight: bold;
+    font-size: larger;
+}
+#message {
+    font-size: small;
+    color: gray;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+label {
+    display: none;
+}
+
+input {
+    width: 80vw;
+    margin: 5vw;
+    height: 7vh;
+    border-radius: 7vw;
+    padding-left: 7vw;
+    border: none;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+input::placeholder {
+    font-family: 'Poppins';
+}
+
+#submit-btn {
+    padding-left: 0;
+    background-color: lightskyblue;
+    color: white;
+    font-weight: bold;
+}
+
+#login-prompt {
+    font-size: small;
+    font-weight:500;
+
+}
+
+a {
+    text-decoration: none;
+}
+
+@media screen and (min-width: 1024px) {
+    #register-page-wrapper {
+        height: 80vh;
+    }
+    #register-box {
+    width: 70vw;
+    height: 80vh;
+    border-radius: 15px;
+    margin-top: 10vh;
+    
+    }
+    #message {
+        font-size: medium;
+    }
+
+    form {
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .fields {
+        display: flex;
+
+    }
+    .field {
+        display: flex;
+        flex-direction: column;
+    }
+
+    label {
+        display: inline;
+        font-size: small;
+        margin-left: 1.5vw;
+        margin-top: 1vh;
+        
+    }
+
+    input {
+        width: 30vw;
+        margin: 1vw;
+        margin-top: 0;
+        padding-left: 2vw;
+        border-radius: 1vw;
+    }
+    select {
+        width: 15vw;
+        margin-left: 10vw;
+        height: 5vh;
+        border-radius: 5px;
+        border: 2px solid rgb(181, 181, 181);
+    }
+    
+    #role-field {
+        margin-top: 10px;
+        margin-bottom: 50px;
+    }
+    
+
+}

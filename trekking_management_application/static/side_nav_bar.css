@@ -1,0 +1,18 @@
+.content {
+    width: 100vw;
+    height: 87.35vh;
+    display: flex;
+
+}
+
+.side-nav-bar {
+    width: 18vw;
+    height: 87.35vh;
+    background-color: #AFAC3C;
+}
+
+.main-content {
+    width: 82vw;
+    height: 87.35vh;
+    background-color: #F7F5B7;
+}
