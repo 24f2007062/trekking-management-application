@@ -57,9 +57,15 @@ def register_form():
     
 
 
-@app.route('/admin')
+@app.route('/admin/dashboard')
 def admin_dashboard():
-    return render_template('adminpages/dashboard.html')
+    trek_count=Trek.query.count()
+    user_count=User.query.count() -1
+    staff_count=StaffProfile.query.count()
+    booking_count=Booking.query.count()
+
+    recent_bookings=Booking.query.order_by(Booking.booking_id.desc()).limit(5).all() # tooking the hlep of ai in this query.
+    return render_template('adminpages/dashboard.html', trek_count=trek_count, user_count=user_count, staff_count=staff_count, booking_count=booking_count, recent_bookings=recent_bookings)
 
 
 @app.route('/user/<int:user_id>')

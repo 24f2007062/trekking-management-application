@@ -1,0 +1,52 @@
+nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.4vh;
+    margin-top: 3vh;
+
+}
+
+.nav_item {
+    width: 80%;
+    display: flex;
+    align-items: center;
+    padding: 0.6vh;
+    margin: 0.6vh;
+    text-decoration: none;
+    color: white;
+    font-family: "Poppins";
+    justify-content: start;
+    font-weight: medium;
+}
+
+.nav_item_logo {
+    font-weight: small;
+    transform: scale(0.7);
+    margin-right: 15%;
+    margin-left: 10%;
+    
+}
+
+
+.nav_item:hover {
+    background-color: #F7F5B7;
+    color: #3F5B24;
+    font-weight: bolder;
+    border-radius: 5px;
+}
+
+.nav_item:active {
+    background-color: #3F5B24;
+    color: #F7F5B7;
+    font-weight: bolder;
+    border-radius: 5px;
+
+}
+
+#dashboard-btn {
+    background-color: #3F5B24;
+    color: #F7F5B7;
+    font-weight: bolder;
+    border-radius: 5px;   
+}

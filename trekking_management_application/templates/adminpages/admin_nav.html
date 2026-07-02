@@ -1,0 +1,63 @@
+{% extends 'side_nav_bar.html' %}
+
+{% block css2 %} <link rel="stylesheet" href="{{ url_for('static', filename='admin/admin_nav.css') }}"> {% endblock %}
+
+{% block css3 %}{% endblock %}
+
+{% block title %}{% endblock %}
+
+
+{% block sidebar %}
+    
+    <nav>
+        <a class='nav_item' id='dashboard-btn' href="{{ url_for('admin_dashboard') }}">
+            <div class='nav_item_logo'><span class="material-symbols-outlined">dashboard</span></div>
+            <div class='nav_item_name'>Dashboard</div>
+        </a>
+
+        <a class='nav_item' href="{{ url_for('admin_dashboard') }}">
+            <div class='nav_item_logo'><span class="material-symbols-outlined">forest</span></div>
+            <div class='nav_item_name'>Trek</div>
+        </a>
+
+        <a class='nav_item' href="{{ url_for('admin_dashboard') }}">
+            <div class='nav_item_logo'><span class="material-symbols-outlined">hiking</span></div>
+            <div class='nav_item_name'>Staff</div>
+        </a>
+
+        <a class='nav_item' href="{{ url_for('admin_dashboard') }}">
+            <div class='nav_item_logo'><span class="material-symbols-outlined">group</span></div>
+            <div class='nav_item_name'>User</div>
+        </a>
+
+        <a class='nav_item' href="{{ url_for('admin_dashboard') }}">
+            <div class='nav_item_logo'><span class="material-symbols-outlined">event</span></div>
+            <div class='nav_item_name'>Booking</div>
+        </a>
+        
+        <a class='nav_item' href="{{ url_for('admin_dashboard') }}">
+            <div class='nav_item_logo'><span class="material-symbols-outlined">search</span></div>
+            <div class='nav_item_name'>Search</div>
+        </a>
+
+        <a class='nav_item' href="{{ url_for('admin_dashboard') }}">
+            <div class='nav_item_logo'><span class="material-symbols-outlined">article</span></div>
+            <div class='nav_item_name'>Report</div>
+        </a>
+
+        <a class='nav_item' href="{{ url_for('admin_dashboard') }}">
+            <div class='nav_item_logo'><span class="material-symbols-outlined">settings</span></div>
+            <div class='nav_item_name'>Setting</div>
+        </a>
+
+        <a class='nav_item' href="{{ url_for('admin_dashboard') }}">
+            <div class='nav_item_logo'><span class="material-symbols-outlined">logout</span></div>
+            <div class='nav_item_name'>Logout</div>
+        </a>
+    </nav>
+
+
+{% endblock %}
+
+{% block main_content %}
+{% endblock %}

@@ -5,6 +5,7 @@
 }
 body {
     background-color: #AFAC3C;
+    font-family: "Poppins";
 }
 #header {
     display: flex;

@@ -10,6 +10,8 @@
 
     <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
     {% block css %}{% endblock %}
+    {% block css2 %}{% endblock %}
+    {% block css3 %}{% endblock %}
 
     <title>{% block title %}{% endblock %}</title>
 </head>
@@ -17,7 +19,9 @@
     <header id="header">
             <div class="material-symbols-outlined">mountain_flag</div>
             <div id="app-header-name">Trekking Management Syestem</div>
+            
     </header>
+    
 
 <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
 <!-- NAV SIDE BAR -->
