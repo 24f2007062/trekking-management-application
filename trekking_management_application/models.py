@@ -40,8 +40,9 @@ class Trek(db.Model):
     start_date = db.Column(db.String(10), nullable=False)  # YYYY-MM-DD
     end_date = db.Column(db.String(10), nullable=False)    # YYYY-MM-DD
     status = db.Column(db.String(20), nullable=False, default='Pending') # 'Pending', 'Approved', 'Open', 'Closed', 'Completed'
-    
+    description = db.Column(db.String(2000), nullable=True)
     assigned_staff_id = db.Column(db.Integer, db.ForeignKey('staff_profiles.staff_id'), nullable=True)
+    image_file = db.Column(db.String(100), nullable=False, default='default_trek.jpg')
     bookings = db.relationship('Booking', backref='trek')
 
 class Booking(db.Model):

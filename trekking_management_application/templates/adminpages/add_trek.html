@@ -1,0 +1,73 @@
+{% extends '/adminpages/admin_nav.html' %}
+
+{% block css3 %}<link rel='stylesheet' href="{{ url_for('static', filename='/css/admin/add_trek.css') }}">{% endblock %}
+
+{% block title %}Add Treks{% endblock %}
+
+{% block main_content %}
+
+<div id='wrapper'>
+    <h1>Add New Trek</h1>
+    <form action="{{ url_for('add_trek') }}" method='post'>
+        
+        <div class='half_form'>
+
+            <label for="trek_name">Trek Name</label>
+            <input type="text" id="trek_name" name="trek_name" placeholder="Enter Trek Name" required>
+
+            <label for="location">Location</label>
+            <input type="text" id="location" name="location" placeholder="Enter Location" required>
+
+            <label for="difficulty">Difficulty</label>
+            <select name="difficulty" id="difficulty" required>
+                <option value="easy">Easy</option>
+                <option value="moderate">Moderate</option>
+                <option value="hard">Hard</option>
+            </select>
+
+            <label for="duration">Duration (Days)</label>
+            <input type="number" id="duration" name="duration" placeholder="Enter Duration" required>
+
+            <label for="slots">Total Slot</label>
+            <input type="number" id="slot" name="slot" placeholder="Enter total slot" required>
+
+            
+
+        </div>
+        <div class='half_form'>
+            
+            <label for="s_date">Start Date</label>
+            <input type="date" id="s_date" name="s_date" placeholder="Enter starting date" required>
+
+            <label for="e_date">End Date</label>
+            <input type="date" id="e_date" name="e_date" placeholder="Enter ending date" required>
+
+            <label for="staff">Assigned Staff</label>
+            <select name="staff" id="staff" required>
+                {% for staff in staffs %}
+                <option value="{{ staff.staff_id }}">{{ staff.name }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="">Status</label>
+            <select name="status" id="status" required>
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="open">Open</option>
+                <option value="closed">Closed</option>
+                <option value="completed">Completed</option>
+            </select>
+
+            <label for="description">Enter your paragraph:</label>
+            <textarea id="description" name="description" rows="5" cols="40" placeholder="Enter description"></textarea>
+
+
+
+            <input type="submit" id="submit-btn" value="submit">
+        </div>
+        
+        
+    </form>
+</div>
+
+{% endblock %}

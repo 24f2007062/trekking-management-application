@@ -1,0 +1,54 @@
+{% extends '/adminpages/admin_nav.html' %}
+
+{% block css3 %}<link rel='stylesheet' href="{{ url_for('static', filename='/css/admin/trek_manage.css') }}">{% endblock %}
+
+{% block title %}Admin Treks{% endblock %}
+
+{% block main_content %}
+
+    <h1>Treks</h1>
+    <div id='serchtrek-and-addtrek'>
+        <!-- <form action='/' method=''>
+
+        </form> -->
+        <div class='add_trek'>
+            <a href="{{ url_for('add_trek') }}"> add trek </a>
+        </div>
+    </div>
+
+        <table>
+            <tr>
+                <th>Trek Id</th>
+                <th>Trek Name</th>
+                <th>Location</th>
+                <th>Difficulty</th>
+                <th>Available Slots</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            {% for trek in treks %}
+                <tr>
+                    <td>{{ trek.trek_id}}</td>
+                    <td>{{ trek.trek_name }}</td>
+                    <td>{{ trek.location }}</td>
+                    <td>{{ trek.difficulty }}</td>
+                    <td>{{ trek.available_slots }}</td>
+                    <td>{{ trek.status }}</td>
+                    <td>
+                       <div class='action-btns'>
+                            <a class='edit-trek-btn' href="{{ url_for('edit_trek', trek_id=trek.trek_id) }}"><span class="material-symbols-outlined">edit</span></a>
+
+                            <form action="{{ url_for('trek_delete_action', trek_id=trek.trek_id) }}" method="POST">
+                                <button type="submit" name="delete_clicked" value="True" class="delete-btn">
+                                    <span class="material-symbols-outlined">delete</span>
+                                </button>
+                            </form>
+
+                            <a class='view-trek-btn' href="{{ url_for('view_trek', trek_id=trek.trek_id) }}"><span class="material-symbols-outlined">expand_content</span></a> 
+                        </div> 
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+{% endblock %}

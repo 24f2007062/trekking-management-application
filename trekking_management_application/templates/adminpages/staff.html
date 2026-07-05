@@ -1,0 +1,52 @@
+{% extends '/adminpages/admin_nav.html' %}
+
+{% block css3 %}<link rel='stylesheet' href="{{ url_for('static', filename='/css/admin/staff.css') }}">{% endblock %}
+
+{% block title %}staff management{% endblock %}
+
+{% block main_content %}
+
+
+    <h1>Staff Request</h1>
+    <div id='status-query-btns'>
+        
+        <div class='pending-btn'>
+            <a href="{{ url_for('admin_staff', tab='Pending') }}"> Pending  </a>
+        </div>
+        <div class='approved-btn'>
+            <a href="{{ url_for('admin_staff', tab='Approved') }}"> Approved  </a>
+        </div>
+        <div class='blacklisted-btn'>
+            <a href="{{ url_for('admin_staff', tab='Blacklisted') }}"> blacklisted  </a>
+        </div>
+
+    </div>
+
+        <table>
+            <tr>
+                <th>Staff Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Contect</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            {% for staff in staffs %}
+                <tr>
+                    <td>{{ staff.staff_id }}</td>
+                    <td>{{ staff.name }}</td>
+                    <td>{{ staff.email }}</td>
+                    <td>{{ staff.phone }}</td>
+                    <td>{{ staff.status }}</td>
+                    <td>
+                       <div class='action-btns'>
+                            
+                            <a class='approve-staff-btn' style="{{ 'display: none;' if current_tab == 'Approved' else '' }}" href="{{ url_for('admin_staff', status='Approved', id=staff.staff_id) }}">Approve</a>
+                            <a class='reject-staff-btn' style="{{ 'display:none;' if current_tab=='Blacklisted' else '' }}" href="{{ url_for('admin_staff', status='Blacklisted', id=staff.staff_id) }}">Reject</a> 
+                        </div> 
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+{% endblock %}
