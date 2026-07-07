@@ -1,19 +1,24 @@
-.content {
-    width: 100vw;
-    height: 87.35vh;
+.app_layout {
+    width: 100%;
+    min-height: 87.35vh;
     display: flex;
-
 }
 
 .side-nav-bar {
     width: 18vw;
-    height: 87.35vh;
+    flex-shrink: 0;
     background-color: #AFAC3C;
+    height: 87.35vh;
+    position: sticky;
+    top: calc(100vh - 87.35vh);
+    z-index: 1;
+    align-self: flex-start;
+
 }
 
 .main-content {
-    width: 82vw;
-    height: 87.35vh;
+    flex: 1;
+    min-width: 0;
     background-color: #F7F5B7;
     padding: 3.5vh;
 }

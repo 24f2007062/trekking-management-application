@@ -1,19 +1,14 @@
-#trek-btn {
+#user-btn {
     background-color: #3F5B24;
     color: #F7F5B7;
     font-weight: bolder;
-    border-radius: 5px; 
+    border-radius: 5px;
 }
-
-
 
 h1 {
     color: #3F5B24;
     margin-bottom: 2vh;
 }
-
-
-
 
 table {
   width: 100%;               
@@ -28,38 +23,6 @@ th, td {
 
 th {
   background-color: #f4f4f4; 
-}
-
-
-.action-btns {
-  width: 100%;
-  display: flex;
-  justify-content: space-evenly;
-}
-
-.add_trek {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 12px 24px;
-  background: #E8AF52;
-  color: white;
-  border-radius: 6px;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.add_trek:hover {
-  background-color: #e6be7c;
-}
-
-#serchtrek-and-addtrek {
-  display: flex; 
-  justify-content: space-between;
-  width: 100%;
-  background-color: cyan;
-  height: 10%;
 }
 
 #search-filter {
@@ -84,7 +47,7 @@ th {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 60%;
+  width: 30%;
 }
 
 #search-box {
@@ -106,18 +69,11 @@ th {
 .filters {
   display: flex;
   flex-direction: column;
-  width: 25%;
+  width: 200px;
 }
 
 .label {
   font-size: smaller;
-}
-
-#location, #difficulty, #status {
-  height: 25px;
-  background-color: #3F5B24;
-  border-radius: 5px;
-  color: white;
 }
 
 #filter-btn {
@@ -136,12 +92,9 @@ th {
   font-size: x-large;
 }
 
-.addtrek-rowcount {
-  display: flex;
-}
-
-.row-count {
-  background-color: white;
-  padding: 12px 24px;
-  margin-left: 50px;
+#status {
+  height: 25px;
+  background-color: #3F5B24;
+  border-radius: 5px;
+  color: white;
 }

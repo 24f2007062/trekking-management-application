@@ -20,9 +20,9 @@
 
             <label for="difficulty">Difficulty</label>
             <select name="difficulty" id="difficulty" required>
-                <option value="easy">Easy</option>
-                <option value="moderate">Moderate</option>
-                <option value="hard">Hard</option>
+                <option value="Easy">Easy</option>
+                <option value="Moderate">Moderate</option>
+                <option value="Hard">Hard</option>
             </select>
 
             <label for="duration">Duration (Days)</label>
@@ -42,6 +42,10 @@
             <label for="e_date">End Date</label>
             <input type="date" id="e_date" name="e_date" placeholder="Enter ending date" required>
 
+            <label for="b_date">Last Booking Date</label>
+            <input type="date" id="b_date" name="b_date" placeholder="Enter ending date">
+
+
             <label for="staff">Assigned Staff</label>
             <select name="staff" id="staff" required>
                 {% for staff in staffs %}
@@ -51,11 +55,11 @@
 
             <label for="">Status</label>
             <select name="status" id="status" required>
-                <option value="pending">Pending</option>
-                <option value="approved">Approved</option>
-                <option value="open">Open</option>
-                <option value="closed">Closed</option>
-                <option value="completed">Completed</option>
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Open">Open</option>
+                <option value="Closed">Closed</option>
+                <option value="Completed">Completed</option>
             </select>
 
             <label for="description">Enter your paragraph:</label>

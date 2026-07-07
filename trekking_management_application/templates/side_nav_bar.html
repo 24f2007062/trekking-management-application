@@ -12,16 +12,16 @@
 
 {% block content %}
 
-<div class="content">
-    <div class="side-nav-bar">
+<div class="app_layout">
+    <aside class="side-nav-bar">
         {% block sidebar %}
         {% endblock %}
-    </div>
+    </aside>
 
-    <div class="main-content">
+    <main class="main-content">
         {% block main_content %}
         {% endblock %}
-    </div>
+    </main>
 </div>
 
 {% endblock %}

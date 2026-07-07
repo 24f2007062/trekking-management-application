@@ -20,9 +20,9 @@
 
             <label for="difficulty">Difficulty</label>
             <select name="difficulty" id="difficulty" required>
-                <option value="easy" {{ 'selected' if trek.difficulty == 'easy' else '' }}>Easy</option>
-                <option value="moderate" {{ 'selected' if trek.difficulty == 'moderate' else '' }}>Moderate</option>
-                <option value="hard" {{ 'selected' if trek.difficulty == 'hard' else '' }}>Hard</option>
+                <option value="Easy" {{ 'selected' if trek.difficulty == 'Easy' else '' }}>Easy</option>
+                <option value="Moderate" {{ 'selected' if trek.difficulty == 'Moderate' else '' }}>Moderate</option>
+                <option value="Hard" {{ 'selected' if trek.difficulty == 'Hard' else '' }}>Hard</option>
             </select>
 
             <label for="duration">Duration (Days)</label>
@@ -42,6 +42,9 @@
             <label for="e_date">End Date</label>
             <input type="date" id="e_date" name="e_date" placeholder="Enter ending date" value="{{trek.end_date}}" required>
 
+            <label for="b_date">Last Booking Date</label>
+            <input type="date" id="b_date" name="b_date" placeholder="Enter ending date" value="{{trek.last_booking_date}}">
+
             <label for="staff">Assigned Staff</label>
             <select name="staff" id="staff" required>
                 {% for staff in staffs %}
@@ -51,11 +54,11 @@
 
             <label for="">Status</label>
             <select name="status" id="status" required>
-                <option value="pending" {{ 'selected' if trek.status=='pending' else '' }}>Pending</option>
-                <option value="approved" {{ 'selected' if trek.status=='approved' else '' }}>Approved</option>
-                <option value="open" {{ 'selected' if trek.status=='open' else '' }}>Open</option>
-                <option value="closed" {{ 'selected' if trek.status=='closed' else '' }}>Closed</option>
-                <option value="completed" {{ 'selected' if trek.status=='completed' else '' }}>Completed</option>
+                <option value="Pending" {{ 'selected' if trek.status=='pending' else '' }}>Pending</option>
+                <option value="Approved" {{ 'selected' if trek.status=='approved' else '' }}>Approved</option>
+                <option value="Open" {{ 'selected' if trek.status=='open' else '' }}>Open</option>
+                <option value="Closed" {{ 'selected' if trek.status=='closed' else '' }}>Closed</option>
+                <option value="Completed" {{ 'selected' if trek.status=='completed' else '' }}>Completed</option>
             </select>
 
             <label for="description">Enter your paragraph:</label>

@@ -4,3 +4,80 @@
     font-weight: bolder;
     border-radius: 5px; 
 }
+
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+#image-and-details {
+    display: flex;
+}
+
+.trek-banner-img {
+    width: 40%;
+    padding: 15px;
+    background-color: white;
+    border-radius: 15px;
+    margin-top: 50px;
+
+}
+
+.info {
+    width: 50%;
+    margin-left: 20px;
+}
+.trek_details { 
+    width: 80%;
+    height: 75%;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 40px;
+    justify-content: space-around;
+}
+
+.oneinfo {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.variable {
+    width: 40%;
+    font-weight: bolder;
+}
+
+.value {
+    width: 40%;
+}
+
+.description {
+    margin-top: 30px;
+    
+}
+
+.description_attribute {
+    margin-bottom: 5px;
+    font-weight: bolder;
+
+}
+
+table {
+  width: 100%;               
+  border-collapse: collapse; 
+}
+
+th, td {
+  border: 1px solid #ccc;  
+  padding: 12px;             
+  text-align: left;      
+}
+
+th {
+  background-color: #f4f4f4; 
+}
+
+.participant {
+    margin-top: 50px;
+}

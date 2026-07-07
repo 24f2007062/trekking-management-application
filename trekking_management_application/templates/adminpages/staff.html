@@ -9,18 +9,27 @@
 
     <h1>Staff Request</h1>
     <div id='status-query-btns'>
-        
+
         <div class='pending-btn'>
-            <a href="{{ url_for('admin_staff', tab='Pending') }}"> Pending  </a>
+            <a href="{{ url_for('admin_staff', tab='Pending') }}" class="{{ 'active' if current_tab=='Pending' }} tab"> Pending</a>
         </div>
         <div class='approved-btn'>
-            <a href="{{ url_for('admin_staff', tab='Approved') }}"> Approved  </a>
+            <a href="{{ url_for('admin_staff', tab='Approved') }}" class="{{ 'active' if current_tab=='Approved' }} tab"> Approved</a>
         </div>
         <div class='blacklisted-btn'>
-            <a href="{{ url_for('admin_staff', tab='Blacklisted') }}"> blacklisted  </a>
+            <a href="{{ url_for('admin_staff', tab='Blacklisted') }}" class="{{ 'active' if current_tab=='Blacklisted' }} tab"> Blacklisted</a>
+        </div>
+
+        <div class='all-btn'>
+            <a href="{{ url_for('admin_staff', tab='All') }}" class="{{ 'active' if current_tab=='All' }} tab">All</a>
         </div>
 
     </div>
+    <form class="search" style="{{ 'display: initial;' if current_tab == 'All' else 'display: none;' }}" action="{{ url_for('admin_staff') }}" method="get">
+        <input id="search-box" type="text" placeholder="Search by Name or Id" name="search">
+        <button id="search-btn-t"><span class="material-symbols-outlined search-icon">search</span></button>
+    </form>
+
 
         <table>
             <tr>
@@ -40,7 +49,6 @@
                     <td>{{ staff.status }}</td>
                     <td>
                        <div class='action-btns'>
-                            
                             <a class='approve-staff-btn' style="{{ 'display: none;' if current_tab == 'Approved' else '' }}" href="{{ url_for('admin_staff', status='Approved', id=staff.staff_id) }}">Approve</a>
                             <a class='reject-staff-btn' style="{{ 'display:none;' if current_tab=='Blacklisted' else '' }}" href="{{ url_for('admin_staff', status='Blacklisted', id=staff.staff_id) }}">Reject</a> 
                         </div> 

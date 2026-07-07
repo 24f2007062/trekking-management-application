@@ -19,3 +19,48 @@ th {
     font-weight: bolder;
     border-radius: 5px; 
 }
+
+
+#status-query-btns {
+  display: flex;
+  margin: 20px 0;
+
+}
+
+.tab {
+  text-decoration: none;
+  background-color: white;
+  color: black;
+  padding: 10px 20px;
+  border: 1px solid black;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.active {
+  background-color: #3F5B24;
+  color: white;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#search-box {
+  height: 35px;
+  width: 300px;
+}
+
+#search-btn-t {
+  height: 35px;
+  width: 35px;
+  background-color: white;
+  border: 1px solid black;
+  margin-bottom: 0;
+}
+
+.search-icon {
+  font-size: x-large;
+}

@@ -1,3 +1,4 @@
+from datetime import timedelta
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -15,6 +16,15 @@ class User(db.Model):
     
     # Relationship to track a trekker's bookings
     bookings = db.relationship('Booking', backref='trekker')
+
+    def active_bookings(self):
+        return [b for b in self.bookings if b.status == 'Booked']
+    
+    def canceled_bookings(self):
+        return [b for b in self.bookings if b.status == 'Canceled']
+    
+    def completed_bookings(self):
+        return [b for b in self.bookings if b.status == 'Completed']
 
 class StaffProfile(db.Model):
     __tablename__ = 'staff_profiles'
@@ -37,18 +47,23 @@ class Trek(db.Model):
     duration = db.Column(db.Integer, nullable=False)       # in days
     total_slots = db.Column(db.Integer, nullable=False)
     available_slots = db.Column(db.Integer, nullable=False)
-    start_date = db.Column(db.String(10), nullable=False)  # YYYY-MM-DD
-    end_date = db.Column(db.String(10), nullable=False)    # YYYY-MM-DD
+    start_date = db.Column(db.Date, nullable=False)  # YYYY-MM-DD
+    end_date = db.Column(db.Date, nullable=False)    # YYYY-MM-DD
+    last_booking_date = db.Column(db.Date, nullable=False, default= lambda context: context.get_current_parameters()['start_date'] - timedelta(days=4))
     status = db.Column(db.String(20), nullable=False, default='Pending') # 'Pending', 'Approved', 'Open', 'Closed', 'Completed'
     description = db.Column(db.String(2000), nullable=True)
     assigned_staff_id = db.Column(db.Integer, db.ForeignKey('staff_profiles.staff_id'), nullable=True)
     image_file = db.Column(db.String(100), nullable=False, default='default_trek.jpg')
     bookings = db.relationship('Booking', backref='trek')
+    
+    __table_args__ = (
+        db.CheckConstraint('last_booking_date < start_date', name='check_last_booking_before_start'),
+    )
 
 class Booking(db.Model):
     __tablename__ = 'bookings'
     booking_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     trek_id = db.Column(db.Integer, db.ForeignKey('treks.trek_id'), nullable=False)
-    booking_date = db.Column(db.String(10), nullable=False) # YYYY-MM-DD
+    booking_date = db.Column(db.Date, nullable=False) # YYYY-MM-DD
     status = db.Column(db.String(20), nullable=False, default='Booked') # 'Booked', 'Cancelled', 'Completed'
