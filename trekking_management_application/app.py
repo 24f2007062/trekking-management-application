@@ -180,7 +180,7 @@ def add_trek():
 
 
 
-from sqlalchemy import or_
+# from sqlalchemy import or_
 
 @app.route('/admin/staff')
 def admin_staff():
@@ -242,6 +242,33 @@ def admin_user():
     
 
     return render_template('adminpages/user.html', users=users)
+
+
+@app.route('/admin/booking')
+def admin_booking():
+    search = request.args.get('search')
+    trek = request.args.get('trek')
+    status = request.args.get('status')
+    booking_id = request.args.get('booking_id')
+
+
+    bookings = Booking.query.all()
+
+    if search:
+        if search.isdigit():
+            bookings = Booking.query.filter_by(booking_id=int(search)).all()
+    if trek:
+        trek_id = int(trek)
+        bookings = Booking.query.filter_by(trek_id=trek_id).all()
+    if status:
+        bookings = Booking.query.filter_by(status=status).all()
+    if booking_id:
+        booking = Booking.query.filter_by(booking_id=booking_id).first()
+        booking.status = "Canceled"
+        db.session.commit()
+
+    treks = Trek.query.all()
+    return render_template('adminpages/booking.html', bookings=bookings, treks=treks)
 
 ##########################################################################################################################################
 

@@ -1,0 +1,67 @@
+{% extends '/adminpages/admin_nav.html' %}
+
+{% block css3 %}<link rel='stylesheet' href="{{ url_for('static', filename='/css/admin/booking.css') }}">{% endblock %}
+
+{% block title %}staff management{% endblock %}
+
+{% block main_content %}
+
+    <h1>Bookings</h1>
+    
+    <div id='search-filter'>
+        <form class="search" action="{{ url_for('admin_booking') }}" method="get">
+            <input id="search-box" type="text" placeholder="Search by Id" name="search">
+            <button id="search-btn-t"><span class="material-symbols-outlined search-icon">search</span></button>
+        </form>
+        <form class="filter" action="{{ url_for('admin_booking') }}" method="get">
+
+            <div class="filters">
+                <label for="trek" class="label">Treks</label>
+                <select name="trek" id="trek">
+                    <option value="" selected>Select</option>
+                    {% for trek in treks %}
+                    <option value="{{ trek.trek_id }}">{{ trek.trek_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filters">
+                <label for="status" class="label">Status</label>
+                <select name="status" id="status">
+                    <option value="">Select</option>
+                    <option value="Booked">Booked</option>
+                    <option value="Canceled">Canceled</option>
+                    <option value="Completed">Completed</option>
+                </select>
+            </div>
+            <button id="filter-btn">Filter  <span class="material-symbols-outlined filter-icon">filter_alt</span></button>
+        </form>
+
+    </div>
+
+        <table>
+            <tr>
+                <th>Booking Id</th>
+                <th>User</th>
+                <th>Trek</th>
+                <th>Booking Date</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking.booking_id }}</td>
+                    <td>{{ booking.trekker.name }}</td>
+                    <td>{{ booking.trek.trek_name }}</td>
+                    <td>{{ booking.booking_date }}</td>
+                    <td>{{ booking.status }}</td>
+                    <td>
+                       <div class='action-btns'>
+                            <a class='cancel-btn' href="{{ url_for('admin_booking', booking_id=booking.booking_id) }}" style="{{ 'display:none;' if booking.status != 'Booked' }}">Cancel</a>
+                        </div> 
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+{% endblock %}
