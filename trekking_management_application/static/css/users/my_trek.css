@@ -1,0 +1,31 @@
+#trek-btn {
+    background-color: #3F5B24;
+    color: #F7F5B7;
+    font-weight: bolder;
+    border-radius: 5px;   
+}
+
+
+
+h1 {
+    color: #3F5B24;
+    margin-bottom: 2vh;
+}
+
+
+
+
+table {
+  width: 100%;               
+  border-collapse: collapse; 
+}
+
+th, td {
+  border: 1px solid #ccc;  
+  padding: 12px;             
+  text-align: left;      
+}
+
+th {
+  background-color: #f4f4f4; 
+}

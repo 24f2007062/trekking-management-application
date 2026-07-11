@@ -1,1 +1,76 @@
-{% extends 'base.html' %}
+{% extends 'userpages/user_nav.html' %}
+
+
+{% block css3 %} <link rel="stylesheet" href="{{ url_for('static', filename='/css/users/dashboard.css') }}"> {% endblock %}
+
+{% block title %}{% endblock %}
+
+
+{% block main_content %}
+
+    <h1>Welcome {{ user.name }}!</h1>
+    <div id='cards'>
+
+        <div class='card'>
+            <div class='card-text'>
+                <div class='card-label'>Newly Approved Treks</div>
+                <div class='card-value'></div>
+            </div>
+            <span class="material-symbols-outlined">assignment</span>
+        </div>
+
+        <div class='card'>
+            <div class='card-text'>
+                <div class='card-label'>Open Treks</div>
+                <div class='card-value'></div>
+            </div>
+            <span class="material-symbols-outlined">group</span>
+        </div>
+
+        <div class='card'>
+            <div class='card-text'>
+                <div class='card-label'>Closed Treks</div>
+                <div class='card-value'></div>
+            </div>
+            <span class="material-symbols-outlined">forest</span>
+        </div>
+
+        <div class='card'>
+            <div class='card-text'>
+                <div class='card-label'>Total Participants</div>
+                <div class='card-value'></div>
+            </div>
+            <span class="material-symbols-outlined">forest</span>
+        </div>
+    
+    </div>
+
+    <div id='booking-info'>
+        <h2>My Newly Approved Trek</h2>
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Duration</th>
+                <th>Start Date</th>
+                <th>Booking End Date</th>
+                <th>Action</th>
+            </tr>
+           
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <a href="">Manage</a>
+                    </td>
+                </tr>
+            
+        </table>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,84 @@
+#trek-btn {
+    background-color: #3F5B24;
+    color: #F7F5B7;
+    font-weight: bolder;
+    border-radius: 5px; 
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+#image-and-details {
+    display: flex;
+}
+
+.trek-banner-img {
+    width: 40%;
+    padding: 15px;
+    background-color: white;
+    border-radius: 15px;
+    margin-top: 50px;
+
+}
+
+.info {
+    width: 50%;
+    margin-left: 20px;
+}
+.trek_details { 
+    width: 80%;
+    height: 75%;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 40px;
+    justify-content: space-around;
+}
+
+.oneinfo {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.variable {
+    width: 40%;
+    font-weight: bolder;
+}
+
+.value {
+    width: 40%;
+}
+
+.description {
+    margin-top: 30px;
+    margin-bottom: 50px;
+    
+}
+
+.description_attribute {
+    margin-bottom: 5px;
+    font-weight: bolder;
+
+}
+
+
+.user-booking {
+    width: 90%;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+}
+
+#cancel, #book {
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+}
+#cancel {
+    background-color: darkred;
+}
+#book {
+    background-color: green;
+}

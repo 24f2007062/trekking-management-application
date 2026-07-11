@@ -1,0 +1,31 @@
+{% extends 'userpages/user_nav.html' %}
+
+
+{% block css3 %} <link rel="stylesheet" href="{{ url_for('static', filename='/css/users/user_booking.css') }}"> {% endblock %}
+
+{% block title %}{% endblock %}
+
+
+{% block main_content %}
+
+    <h1>All Bookings</h1>
+    <table>
+            <tr>
+                <th>Trek Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Booked Date</th>
+                <th>Booking Status</th>
+            </tr>
+            {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking.trek.trek_name }}</td>
+                    <td>{{ booking.trek.start_date }}</td>
+                    <td>{{ booking.trek.end_date }}</td>
+                    <td>{{ booking.booking_date }}</td>
+                    <td>{{ booking.status }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+{% endblock %}

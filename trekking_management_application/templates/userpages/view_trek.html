@@ -1,0 +1,89 @@
+{% extends 'userpages/user_nav.html' %}
+
+
+{% block css3 %} <link rel="stylesheet" href="{{ url_for('static', filename='/css/users/view_trek.css') }}"> {% endblock %}
+
+{% block title %}{% endblock %}
+
+
+{% block main_content %}
+
+    <div class="wrapper">
+        <div id="image-and-details">
+            <img src="{{ url_for('static', filename='images/' + trek.image_file) }}" alt="{{ trek.trek_name }}" class="trek-banner-img">
+            <div class="info">
+                <h1>{{ trek.trek_name }}</h1>
+                <div class="trek_details">
+
+                    <div class="oneinfo">
+                        <div class="variable">Location</div>
+                        <div class="value">{{ trek.location }}</div>
+                    </div>
+
+                    <div class="oneinfo">
+                        <div class="variable">Difficulty</div>
+                        <div class="value">{{ trek.difficulty }}</div>
+                    </div>
+
+                    <div class="oneinfo">
+                        <div class="variable">Duration</div>
+                        <div class="value">{{ trek.duration }}</div>
+                    </div>
+
+                    <div class="oneinfo">
+                        <div class="variable">Total Slots</div>
+                        <div class="value">{{ trek.total_slots }}</div>
+                    </div>
+
+                    <div class="oneinfo">
+                        <div class="variable">Available Slots</div>
+                        <div class="value">{{ trek.available_slots }}</div>
+                    </div>
+
+                    <div class="oneinfo">
+                        <div class="variable">Start Date</div>
+                        <div class="value">{{ trek.start_date }}</div>
+                    </div>
+
+                    <div class="oneinfo">
+                        <div class="variable">End Date</div>
+                        <div class="value">{{ trek.end_date }}</div>
+                    </div>
+
+                    <div class="oneinfo">
+                        <div class="variable">Last Booking Date</div>
+                        <div class="value">{{ trek.last_booking_date }}</div>
+                    </div>
+
+                    <div class="oneinfo">
+                        <div class="variable">Status</div>
+                        <div class="value">{{ trek.status }}</div>
+                    </div>
+
+                    <div class="oneinfo">
+                        <div class="variable">Trek Guide</div>
+                        <div class="value">{{ trek.assigned_staff.name }}</div>
+                    </div>
+
+                </div> 
+            </div>
+        </div>
+
+        <div class="description">
+            <div class="description_attribute">Description</div>
+            <div class="description_value">{{ trek.description }}</div>
+        </div>
+        {% if current_date <= trek.last_booking_date %}
+        {% if booking %}
+        <form action="{{ url_for('cancel_booking', trek_id=trek.trek_id, user_id=user.user_id) }}" method="post" class="user-booking">
+            <button type="submit" value="Book" id="cancel">Cancel Booking</button>
+        </form>
+        {% else %}
+        <form action="{{ url_for('book_trek', trek_id=trek.trek_id, user_id=user.user_id) }}" method="post" class="user-booking">
+            <button type="submit" value="Book" id="book">Book Now</button>
+        </form>
+        {% endif %}
+        {% endif %}
+    </div>
+
+{% endblock %}

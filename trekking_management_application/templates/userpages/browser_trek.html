@@ -1,0 +1,84 @@
+{% extends 'userpages/user_nav.html' %}
+
+
+{% block css3 %} <link rel="stylesheet" href="{{ url_for('static', filename='/css/users/browse_trek.css') }}"> {% endblock %}
+
+{% block title %}{% endblock %}
+
+
+{% block main_content %}
+
+    <h1>Search & Browse Trek</h1>
+    <div id="message">Find the perfect trek for your adventure</div>
+
+    <div id='search-filter'>
+        <form class="search" action="{{ url_for('browse_trek', user_id=user.user_id) }}" method="get">
+            <input id="search-box" type="text" placeholder="Search by Name or Id" name="search">
+            <button id="search-btn-t"><span class="material-symbols-outlined search-icon">search</span></button>
+        </form>
+        <form class="filter" action="{{ url_for('browse_trek', user_id=user.user_id) }}" method="get">
+
+            <div class="filters">
+                <label for="location" class="label">Location</label>
+                <select name="location" id="location">
+                    <option value="" selected>All Locations</option>
+                    {% for location in locations %}
+                    <option value="{{ location }}">{{ location }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filters">
+                <label for="difficulty" class="label">Difficulty</label>
+                <select name="difficulty" id="difficulty">
+                    <option value="" seleted>All Difficulties</option>
+                    <option value="Easy">Easy</option>
+                    <option value="Moderate">Moderate</option>
+                    <option value="Hard">Hard</option>
+                </select>
+            </div>
+                
+            <div class="filters">
+                <label for="duration" class="label">Duration (Days)</label>
+                <div class="both_limits">
+                    <input type="number" id="duration" name="minduration" placeholder="Min">-
+                    <input type="number" id="duration" name="maxduration" placeholder="Max">
+                </div>
+            </div>
+            <button id="filter-btn">Filter  <span class="material-symbols-outlined filter-icon">filter_alt</span></button>
+        </form>
+
+    </div>
+
+        <table>
+            <tr>
+                <th>Trek Name</th>
+                <th>Location</th>
+                <th>Difficulty</th>
+                <th>Duration</th>
+                <th>Available Slots</th>
+                <th>Booking End Date</th>
+                <th>Start Date</th>
+                <th>Action</th>
+            </tr>
+            {% for trek in treks %}
+                <tr>
+                    <td>{{ trek.trek_name}}</td>
+                    <td>{{ trek.location }}</td>
+                    <td>{{ trek.difficulty }}</td>
+                    <td>{{ trek.duration }}</td>
+                    <td>{{ trek.available_slots }}</td>
+                    <td>{{ trek.last_booking_date }}</td>
+                    <td>{{ trek.start_date }}</td>
+                    <td>
+                       <div class='action-btns'>
+                            <a class='view-trek-btn' href="{{ url_for('user_view_trek', trek_id=trek.trek_id, user_id=user.user_id) }}">View</a>
+                        </div> 
+                    </td>
+                </tr> 
+            {% endfor %}
+        </table>
+
+
+
+{% endblock %}

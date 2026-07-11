@@ -1,0 +1,55 @@
+{% extends 'side_nav_bar.html' %}
+
+{% block css2 %} <link rel="stylesheet" href="{{ url_for('static', filename='/css/users/user_nav.css') }}"> {% endblock %}
+
+{% block css3 %}{% endblock %}
+
+{% block title %}{% endblock %}
+
+
+{% block sidebar %}
+    
+    <nav>
+        <a class='nav_item' id='dashboard-btn' href="{{ url_for('user_dashboard', user_id=user.user_id) }}">
+            <div class='nav_item_logo'><span class="material-symbols-outlined">dashboard</span></div>
+            <div class='nav_item_name'>Dashboard</div>
+        </a>
+
+        <a class='nav_item' id='trek-btn' href="{{ url_for('user_trek', user_id=user.user_id) }}">
+            <div class='nav_item_logo'><span class="material-symbols-outlined">forest</span></div>
+            <div class='nav_item_name'>My Trek</div>
+        </a>
+
+        <a class='nav_item' id='search-btn' href="{{ url_for('browse_trek', user_id=user.user_id) }}">
+            <div class='nav_item_logo'><span class="material-symbols-outlined">search</span></div>
+            <div class='nav_item_name'>Search Trek</div>
+        </a>
+
+        <a class='nav_item' id='booking-btn' href="{{ url_for('user_bookings', user_id=user.user_id) }}">
+            <div class='nav_item_logo'><span class="material-symbols-outlined">event</span></div>
+            <div class='nav_item_name'>Booking</div>
+        </a>
+        
+        
+
+        <a class='nav_item' id='history-btn' href="{{ url_for('user_history', user_id=user.user_id) }}">
+            <div class='nav_item_logo'><span class="material-symbols-outlined">hiking</span></div>
+            <div class='nav_item_name'>History</div>
+        </a>
+
+        <a class='nav_item' id='profile-btn' href="{{ url_for('user_dashboard', user_id=user.user_id) }}">
+            <div class='nav_item_logo'><span class="material-symbols-outlined">group</span></div>
+            <div class='nav_item_name'>Profile</div>
+        </a>
+
+        <a class='nav_item' href="{{ url_for('login') }}">
+            <div class='nav_item_logo'><span class="material-symbols-outlined">logout</span></div>
+            <div class='nav_item_name'>Logout</div>
+        </a>
+    </nav>
+
+
+{% endblock %}
+
+{% block main_content %}
+{% endblock %}

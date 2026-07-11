@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from datetime import datetime
+from datetime import datetime, date
 from models import *
 
 
@@ -131,9 +131,9 @@ def edit_trek(trek_id):
         trek.difficulty = request.form['difficulty']
         trek.duration = request.form['duration']
         trek.total_slots = request.form['slot']
-        start_date = datetime.strptime(request.form['s_date'], '%Y-%m-%d').date()
-        end_date = datetime.strptime(request.form['e_date'], '%Y-%m-%d').date()
-        last_booking_date = datetime.strptime(request.form['b_date'], '%Y-%m-%d').date()
+        trek.start_date = datetime.strptime(request.form['s_date'], '%Y-%m-%d').date()
+        trek.end_date = datetime.strptime(request.form['e_date'], '%Y-%m-%d').date()
+        trek.last_booking_date = datetime.strptime(request.form['b_date'], '%Y-%m-%d').date()
         trek.status = request.form['status']
         trek.description = request.form['description']
         trek.assigned_staff_id = request.form['staff']
@@ -274,13 +274,100 @@ def admin_booking():
 
 # USER PART
 
-@app.route('/user/<int:user_id>')
+@app.route('/user/<int:user_id>/dashboard')
 def user_dashboard(user_id):
-    user = User.query.filter_by(user_id=user_id).first()
+    user = User.query.filter(User.is_blacklisted==False, User.user_id==user_id, User.role=='User').first()
+
 
     return render_template('userpages/dashboard.html', user=user)
 
 
+@app.route('/user/<int:user_id>/trek')
+def user_trek(user_id):
+    user = User.query.filter(User.user_id==user_id, User.role=='User', User.is_blacklisted==False).first()
+    active_trek = Booking.query.join(User, User.user_id==Booking.user_id).join(Trek, Trek.trek_id==Booking.trek_id).filter(Booking.user_id==user_id, Trek.status.in_(['Open', 'Closed', 'Started']), User.role=="User", Booking.status=='Booked').all()
+    if not active_trek:
+        return render_template('userpages/empty_trek.html', user=user)
+    return render_template('userpages/my_trek.html', user=user, active_trek=active_trek)
+
+@app.route('/user/<int:user_id>/browse_trek')
+def browse_trek(user_id):
+    user = User.query.filter_by(user_id=user_id).first()
+    search = request.args.get('search')
+    location = request.args.get('location')
+    difficulty = request.args.get('difficulty')
+    max_duration = request.args.get('maxduration', type=int)
+    min_duration = request.args.get('minduration', type=int)
+    query = Trek.query.filter_by(status='Open')
+    if search:
+        if search.isdigit():
+            query = query.filter_by(trek_id=int(search))
+        else:
+            query = query.filter(Trek.trek_name.ilike(f"%{search}%"))
+    if location:
+        query = query.filter_by(location=location)
+    if difficulty:
+        query = query.filter_by(difficulty=difficulty)
+    if max_duration is not None and min_duration is not None:
+        query = query.filter(Trek.duration.between(min_duration, max_duration))
+    elif min_duration is not None:
+        query = query.filter(Trek.duration >= min_duration)
+    elif max_duration is not None:
+        query = query.filter(Trek.duration <= max_duration)
+    treks = query.all()
+    locations = db.session.scalars(db.select(Trek.location).where(Trek.status=='Open').distinct().order_by(Trek.location)).all()
+    return render_template('userpages/browser_trek.html', user=user, treks=treks, locations=locations)
+
+
+@app.route('/user/<int:user_id>/trek/<int:trek_id>/view')
+def user_view_trek(user_id, trek_id):
+    user = User.query.filter_by(user_id=user_id).first()
+    trek = Trek.query.filter_by(trek_id=trek_id).first()
+    booking = Booking.query.filter_by(user_id=user_id, trek_id=trek_id, status='Booked').first()
+    current_date = date.today()
+    return render_template('userpages/view_trek.html', user=user, trek=trek, booking=booking, current_date=current_date)
+
+@app.route('/user/<int:user_id>/trek/<int:trek_id>/book', methods=['POST'])
+def book_trek(user_id, trek_id):
+    trek = Trek.query.filter_by(trek_id=trek_id).first()
+
+    existing = Booking.query.filter_by(user_id=user_id, trek_id=trek_id, status="Booked").first()
+
+    if existing:
+        return redirect(url_for('user_view_trek', user_id=user_id, trek_id=trek_id))
+
+    if trek.available_slots > 0:
+        trek.available_slots -= 1
+
+    booking = Booking(user_id=user_id, trek_id=trek_id, booking_date=date.today(), status="Booked")
+
+    db.session.add(booking)
+    db.session.commit()
+    return redirect(url_for('browse_trek', user_id=user_id))
+
+@app.route('/user/<int:user_id>/trek/<int:trek_id>/cancel_booking', methods=["POST"])
+def cancel_booking(user_id, trek_id):
+    booking = Booking.query.filter_by(user_id=user_id, trek_id=trek_id, status='Booked').first()
+    if booking:
+
+        booking.status = 'Canceled'
+        trek = Trek.query.get(trek_id)
+        trek.available_slots += 1
+        db.session.commit()
+    return redirect(url_for('browse_trek', user_id=user_id))
+
+
+@app.route('/user/<int:user_id>/bookings')
+def user_bookings(user_id):
+    user = User.query.filter_by(user_id=user_id).first()
+    bookings = Booking.query.join(User, User.user_id==Booking.user_id).join(Trek, Trek.trek_id==Booking.trek_id).filter(User.user_id==user_id).all()
+    return render_template('userpages/user_booking.html', bookings=bookings, user=user)
+
+@app.route('/user/<int:user_id>/history')
+def user_history(user_id):
+    user = User.query.filter_by(user_id=user_id).first()
+    completed_treks = Booking.query.join(Trek, Trek.trek_id==Booking.trek_id).filter(Booking.user_id==user_id, Trek.status=='Completed').all()
+    return render_template('userpages/history.html', user=user, completed_treks=completed_treks)
 ##########################################################################################################################################
 
 # STAFF PART 

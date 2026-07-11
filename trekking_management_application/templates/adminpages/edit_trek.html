@@ -54,11 +54,11 @@
 
             <label for="">Status</label>
             <select name="status" id="status" required>
-                <option value="Pending" {{ 'selected' if trek.status=='pending' else '' }}>Pending</option>
-                <option value="Approved" {{ 'selected' if trek.status=='approved' else '' }}>Approved</option>
-                <option value="Open" {{ 'selected' if trek.status=='open' else '' }}>Open</option>
-                <option value="Closed" {{ 'selected' if trek.status=='closed' else '' }}>Closed</option>
-                <option value="Completed" {{ 'selected' if trek.status=='completed' else '' }}>Completed</option>
+                <option value="Pending" {{ 'selected' if trek.status=='Pending' else '' }}>Pending</option>
+                <option value="Approved" {{ 'selected' if trek.status=='Approved' else '' }}>Approved</option>
+                <option value="Open" {{ 'selected' if trek.status=='Open' else '' }}>Open</option>
+                <option value="Closed" {{ 'selected' if trek.status=='Closed' else '' }}>Closed</option>
+                <option value="Completed" {{ 'selected' if trek.status=='Completed' else '' }}>Completed</option>
             </select>
 
             <label for="description">Enter your paragraph:</label>

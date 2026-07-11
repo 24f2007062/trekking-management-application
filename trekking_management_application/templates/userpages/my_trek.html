@@ -1,0 +1,44 @@
+{% extends 'userpages/user_nav.html' %}
+
+
+{% block css3 %} <link rel="stylesheet" href="{{ url_for('static', filename='/css/users/my_trek.css') }}"> {% endblock %}
+
+{% block title %}{% endblock %}
+
+
+{% block main_content %}
+
+    <h1>My Active Treks</h1>
+    <table>
+            <tr>
+                <th>Trek Name</th>
+                <th>Location</th>
+                <th>Difficulty</th>
+                <th>Duration</th>
+                <th>Available Slots</th>
+                <th>Booking End Date</th>
+                <th>Start Date</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            {% for booking in active_trek %}
+                <tr>
+                    <td>{{ booking.trek.trek_name }}</td>
+                    <td>{{ booking.trek.location }}</td>
+                    <td>{{ booking.trek.difficulty }}</td>
+                    <td>{{ booking.trek.duration }}</td>
+                    <td>{{ booking.trek.available_slots }}</td>
+                    <td>{{ booking.trek.last_booking_date }}</td>
+                    <td>{{ booking.trek.start_date }}</td>
+                    <td>{{ booking.trek.status }}</td>
+                    <td>
+                       <div class='action-btns'>
+                            <a class='view-trek-btn' href="{{ url_for('user_view_trek', user_id=user.user_id, trek_id=booking.trek_id) }}">View</a>
+                        </div> 
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+
+{% endblock %}

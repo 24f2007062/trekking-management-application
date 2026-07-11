@@ -1,0 +1,32 @@
+{% extends 'userpages/user_nav.html' %}
+
+
+{% block css3 %} <link rel="stylesheet" href="{{ url_for('static', filename='/css/users/user_history.css') }}"> {% endblock %}
+
+{% block title %}{% endblock %}
+
+
+{% block main_content %}
+
+    <h1>History</h1>
+    <div class="note">NOTE: This is history only contain the list of Treks which you have successfully completed</div>
+    <table>
+            <tr>
+                <th>Trek Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Booked Date</th>
+                <th>Booking Status</th>
+            </tr>
+            {% for booking in completed_treks %}
+                <tr>
+                    <td>{{ booking.trek.trek_name }}</td>
+                    <td>{{ booking.trek.start_date }}</td>
+                    <td>{{ booking.trek.end_date }}</td>
+                    <td>{{ booking.booking_date }}</td>
+                    <td>{{ booking.status }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+{% endblock %}
