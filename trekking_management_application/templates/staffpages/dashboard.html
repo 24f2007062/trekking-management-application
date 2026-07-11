@@ -1,14 +1,76 @@
-{% extends 'base.html' %}
+{% extends 'staffpages/staff_nav.html' %}
 
-{% block css %}link{% endblock %}
+{% block css3 %} <link rel='stylesheet' href="{{ url_for('static', filename='/css/staff/dashboard.css') }}"> {% endblock %}
 
-
-{% block title %}{% endblock %}
-
-
-{% block human-role %}{% endblock %}
+{% block title %}{{staff.name}} Dashboard{% endblock %}
 
 
-{% block content%}
+
+{% block main_content %}
+
+    <h1>My Dashboard</h1>
+    <div id='cards'>
+
+        <div class='card'>
+            <div class='card-text'>
+                <div class='card-label'>Newly Approved Treks</div>
+                <div class='card-value'>{{ Treklist["Approved"] | length }}</div>
+            </div>
+            <span class="material-symbols-outlined">assignment</span>
+        </div>
+
+        <div class='card'>
+            <div class='card-text'>
+                <div class='card-label'>Open Treks</div>
+                <div class='card-value'>{{ Treklist["Open"] | length }}</div>
+            </div>
+            <span class="material-symbols-outlined">group</span>
+        </div>
+
+        <div class='card'>
+            <div class='card-text'>
+                <div class='card-label'>Closed Treks</div>
+                <div class='card-value'>{{ Treklist["Closed"] | length }}</div>
+            </div>
+            <span class="material-symbols-outlined">forest</span>
+        </div>
+
+        <div class='card'>
+            <div class='card-text'>
+                <div class='card-label'>Total Participants</div>
+                <div class='card-value'>{{ participants }}</div>
+            </div>
+            <span class="material-symbols-outlined">forest</span>
+        </div>
+    
+    </div>
+
+    <div id='booking-info'>
+        <h2>My Newly Approved Trek</h2>
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Duration</th>
+                <th>Start Date</th>
+                <th>Booking End Date</th>
+                <th>Action</th>
+            </tr>
+            {% for trek in Treklist["Approved"] %}
+                <tr>
+                    <td>{{ trek.trek_id }}</td>
+                    <td>{{ trek.trek_name }}</td>
+                    <td>{{ trek.location }}</td>
+                    <td>{{ trek.duration }}</td>
+                    <td>{{ trek.start_date }}</td>
+                    <td>{{ trek.last_booking_date }}</td>
+                    <td>
+                        <a href="{{ url_for('staff_trek_manage', trek_id=trek.trek_id, staff_id=staff.staff_id) }}">Manage</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 
 {% endblock %}

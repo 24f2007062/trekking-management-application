@@ -1,0 +1,71 @@
+{% extends 'staffpages/staff_nav.html' %}
+
+{% block css3 %} <link rel='stylesheet' href="{{ url_for('static', filename='/css/staff/staff_trek_history.css') }}"> {% endblock %}
+
+{% block title %}Treks History{% endblock %}
+
+
+
+{% block main_content %}
+
+    <h1>Trek History</h1>
+    <div id='search-filter'>
+        <form class="search" action="{{ url_for('staff_trek_history', staff_id=staff.staff_id) }}" method="get">
+            <input id="search-box" type="text" placeholder="Search by Name or Id" name="search">
+            <button id="search-btn-t"><span class="material-symbols-outlined search-icon">search</span></button>
+        </form>
+        <form class="filter" action="{{ url_for('staff_trek_history', staff_id=staff.staff_id) }}" method="get">
+
+            <div class="filters">
+                <label for="location" class="label">Location</label>
+                <select name="location" id="location">
+                    <option value="" selected>Select</option>
+                    {% for location in locations %}
+                    <option value="{{ location.location }}">{{ location.location }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filters">
+                <label for="difficulty" class="label">Difficulty</label>
+                <select name="difficulty" id="difficulty">
+                    <option value="" seleted>Select</option>
+                    <option value="Easy">Easy</option>
+                    <option value="Moderate">Moderate</option>
+                    <option value="Hard">Hard</option>
+                </select>
+            </div>
+
+            <button id="filter-btn">Filter  <span class="material-symbols-outlined filter-icon">filter_alt</span></button>
+        </form>
+
+    </div>
+
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Start Date</th>
+                <th>Last Booking Date</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            {% for trek in completed_treks %}
+                <tr>
+                    <td>{{ trek.trek_id }}</td>
+                    <td>{{ trek.trek_name }}</td>
+                    <td>{{ trek.location }}</td>
+                    <td>{{ trek.start_date }}</td>
+                    <td>{{ trek.last_booking_date }}</td>
+                    <td>{{ trek.status }}</td>
+                    <td>
+                       <div class='action-btns'>
+                            <a class='edit-trek-btn' href="{{ url_for('staff_trek_view', trek_id=trek.trek_id, staff_id=staff.staff_id) }}">View</a>
+                        </div> 
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+{% endblock %}

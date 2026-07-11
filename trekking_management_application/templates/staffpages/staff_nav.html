@@ -1,0 +1,44 @@
+{% extends 'side_nav_bar.html' %}
+
+{% block css2 %} <link rel="stylesheet" href="{{ url_for('static', filename='/css/staff/staff_nav.css') }}"> {% endblock %}
+
+{% block css3 %}{% endblock %}
+
+{% block title %}{% endblock %}
+
+
+{% block sidebar %}
+    
+    <nav>
+        <a class='nav_item' id='dashboard-btn' href="{{ url_for('staff_dashboard', staff_id=staff.staff_id) }}">
+            <div class='nav_item_logo'><span class="material-symbols-outlined">dashboard</span></div>
+            <div class='nav_item_name'>Dashboard</div>
+        </a>
+
+        <a class='nav_item' id='trek-btn' href="{{ url_for('staff_trek', staff_id=staff.staff_id) }}">
+            <div class='nav_item_logo'><span class="material-symbols-outlined">forest</span></div>
+            <div class='nav_item_name'>My Trek</div>
+        </a>
+
+        <a class='nav_item' id='participant-btn' href="{{ url_for('staff_participant', staff_id=staff.staff_id) }}">
+            <div class='nav_item_logo'><span class="material-symbols-outlined">hiking</span></div>
+            <div class='nav_item_name'>Participants</div>
+        </a>
+
+        <a class='nav_item' id='user-btn' href="{{ url_for('staff_trek', staff_id=staff.staff_id) }}">
+            <div class='nav_item_logo'><span class="material-symbols-outlined">group</span></div>
+            <div class='nav_item_name'>Profile</div>
+        </a>
+
+
+        <a class='nav_item' href="{{ url_for('login') }}">
+            <div class='nav_item_logo'><span class="material-symbols-outlined">logout</span></div>
+            <div class='nav_item_name'>Logout</div>
+        </a>
+    </nav>
+
+
+{% endblock %}
+
+{% block main_content %}
+{% endblock %}

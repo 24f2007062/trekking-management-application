@@ -1,0 +1,55 @@
+{% extends 'staffpages/staff_nav.html' %}
+
+{% block css3 %} <link rel='stylesheet' href="{{ url_for('static', filename='/css/staff/staff_participant.css') }}"> {% endblock %}
+
+{% block title %}Participants{% endblock %}
+
+
+
+{% block main_content %}
+
+    <h1>Active Participants</h1>
+    <div id='search-filter'>
+        <form class="search" action="{{ url_for('staff_participant', staff_id=staff.staff_id) }}" method="get">
+            <input id="search-box" type="text" placeholder="Search by Name or Id" name="search">
+            <button id="search-btn-t"><span class="material-symbols-outlined search-icon">search</span></button>
+        </form>
+        <form class="filter" action="{{ url_for('staff_participant', staff_id=staff.staff_id) }}" method="get">
+
+            <div class="filters">
+                <label for="status" class="label">Trek Status</label>
+                <select name="status" id="status">
+                    <option value="">Select</option>
+                    <option value="Open">Open</option>
+                    <option value="Closed">Closed</option>
+                    <option value="Started">Started</option>
+                </select>
+            </div>
+
+            <button id="filter-btn">Filter  <span class="material-symbols-outlined filter-icon">filter_alt</span></button>
+        </form>
+
+    </div>
+
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Trek</th>
+                <th>Trek Status</th>
+            </tr>
+            {% for booking in participants %}
+                <tr>
+                    <td>{{ booking.trekker.user_id }}</td>
+                    <td>{{ booking.trekker.name }}</td>
+                    <td>{{ booking.trekker.email }}</td>
+                    <td>{{ booking.trekker.phone }}</td>
+                    <td>{{ booking.trek.trek_name }}</td>
+                    <td>{{ booking.trek.status }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+{% endblock %}

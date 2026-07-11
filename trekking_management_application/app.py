@@ -285,14 +285,142 @@ def user_dashboard(user_id):
 
 # STAFF PART 
 
-@app.route('/staff/<int:staff_id>')
+@app.route('/staff/<int:staff_id>/dashboard')
 def staff_dashboard(staff_id):
     staff = StaffProfile.query.filter_by(staff_id=staff_id).first()
-    return render_template('staffpages/dashboard.html', staff=staff)
 
+    Treklist = {
+        "Approved": Trek.query.filter_by(assigned_staff_id=staff_id, status='Approved').all(),
+        "Open": Trek.query.filter_by(assigned_staff_id=staff_id, status='Open').all(),
+        "Closed": Trek.query.filter_by(assigned_staff_id=staff_id, status='Closed').all()
+    }
+
+    from sqlalchemy import func
+
+    participants = db.session.query(func.count(Booking.booking_id))\
+        .join(Trek, Booking.trek_id == Trek.trek_id)\
+        .filter(Trek.assigned_staff_id == staff_id)\
+        .filter(Trek.status.in_(['Open', 'Closed']))\
+        .filter(Booking.status == 'Booked')\
+        .scalar() or 0
+
+    return render_template('staffpages/dashboard.html', staff=staff, Treklist=Treklist, participants=participants)
+
+@app.route('/staff/<int:staff_id>/trek')
+def staff_trek(staff_id):
+    staff = StaffProfile.query.filter_by(staff_id=staff_id).first()
+    active_treks = Trek.query.filter(Trek.assigned_staff_id == staff_id, Trek.status.in_(['Approved', 'Open', 'Closed', 'Started'])).all()
+    search = request.args.get('search')
+    filter  = request.args.get('status')
+
+    if search:
+        if search.isdigit():
+            active_treks = Trek.query.filter_by(trek_id=int(search)).all()
+        else:
+            active_treks = Trek.query.filter(Trek.trek_name.ilike(f"%{search}%")).all()
+    if filter:
+        active_treks = Trek.query.filter_by(status=filter, assigned_staff_id=staff_id).all()
+
+    return render_template('staffpages/trek.html', staff=staff, active_treks=active_treks)
+
+@app.route('/staff/<int:staff_id>/trek/<int:trek_id>/manage', methods=['GET', 'POST'])
+def staff_trek_manage(staff_id=None, trek_id=None):
+    slots = request.args.get('slots')
+    status = request.args.get('status')
+    start = request.args.get('start')
+    complete = request.args.get('complete')
+
+    staff = StaffProfile.query.filter_by(staff_id=staff_id).first()
+    
+    trek = Trek.query.filter_by(trek_id=trek_id).first()
+
+    active_bookings = Booking.query.join(User, Booking.user_id==User.user_id).join(Trek, Booking.trek_id==Trek.trek_id).filter(Booking.trek_id==trek_id, User.is_blacklisted==False, Booking.status.in_(['Booked', 'Completed'])).all()
+    if slots:
+        trek.available_slots = int(slots)
+        trek.status = status
+        db.session.commit()
+        return redirect(url_for('staff_trek', staff_id=staff_id))
+
+    if start:
+        trek.status = "Started"
+        db.session.commit()
+        return redirect(url_for('staff_trek', staff_id=staff_id))
+    if complete:
+        trek.status = "Completed"
+        db.session.commit()
+        return redirect(url_for('staff_trek', staff_id=staff_id))
+    
+
+    return render_template('staffpages/staff_trek_manage.html', staff=staff, trek=trek, active_bookings=active_bookings)
+
+
+@app.route('/staff/<int:staff_id>/trek_history')
+def staff_trek_history(staff_id):
+    staff = StaffProfile.query.filter_by(staff_id=staff_id).first()
+    locations = Trek.query.filter_by(assigned_staff_id=staff_id, status='Completed').all()
+    query = Trek.query.filter_by(assigned_staff_id=staff_id, status='Completed')
+    location = request.args.get('location')
+    difficulty = request.args.get('difficulty')
+    search = request.args.get('search')
+    if search:
+        if search.isdigit():
+            query = query.filter_by(trek_id=int(search))
+        else:
+            query = query.filter(Trek.trek_name.ilike(f"%{search}%"))
+    if location:
+        query = query.filter_by(assigned_staff_id=staff_id, status='Completed', location=location)
+    if difficulty:
+        query = query.filter_by(assigned_staff_id=staff_id, status='Completed', difficulty=difficulty)
+
+    completed_treks = query.all()
+    
+    
+    return render_template('staffpages/staff_trek_history.html', staff=staff, completed_treks=completed_treks, locations=locations)
+
+@app.route('/staff/<int:staff_id>/trek_history/<int:trek_id>/view_trek')
+def staff_trek_view(staff_id, trek_id):
+
+    staff = StaffProfile.query.filter_by(staff_id=staff_id).first()
+    
+    trek = Trek.query.filter_by(trek_id=trek_id).first()
+    active_bookings = Booking.query.filter(
+        Booking.trek_id == trek_id, 
+        Booking.status.in_(['Booked', 'Completed'])
+    ).all()
+    return render_template('staffpages/staff_trek_view.html',staff=staff, trek=trek, active_bookings=active_bookings)
+
+@app.route('/staff/<int:staff_id>/participants')
+def staff_participant(staff_id):
+    staff = StaffProfile.query.filter_by(staff_id=staff_id).first()
+    query = (
+        Booking.query
+        .join(User, Booking.user_id == User.user_id)
+        .join(Trek, Booking.trek_id == Trek.trek_id)
+        .filter(
+            Trek.assigned_staff_id == staff_id,
+            Trek.status.in_(['Open', 'Closed', 'Started']),
+            Booking.status == 'Booked',
+            User.is_blacklisted.is_(False)
+        )
+    )
+    search = request.args.get('search')
+    trek_status = request.args.get('status')
+
+    if search:
+        if search.isdigit():
+            query = query.filter(User.user_id==int(search))
+        else:
+            query = query.filter(User.name.ilike(f"%{search}%"))
+    if trek_status:
+        query = query.filter(Trek.status==trek_status)
+    
+    participants = query.all()
+            
+    return render_template('staffpages/staff_participant.html', staff=staff, participants=participants)
 
 @app.route('/testing')
 def testing():
+
     return render_template('side_nav_bar.html')
 
 if __name__ == "__main__":

@@ -50,7 +50,7 @@ class Trek(db.Model):
     start_date = db.Column(db.Date, nullable=False)  # YYYY-MM-DD
     end_date = db.Column(db.Date, nullable=False)    # YYYY-MM-DD
     last_booking_date = db.Column(db.Date, nullable=False, default= lambda context: context.get_current_parameters()['start_date'] - timedelta(days=4))
-    status = db.Column(db.String(20), nullable=False, default='Pending') # 'Pending', 'Approved', 'Open', 'Closed', 'Completed'
+    status = db.Column(db.String(20), nullable=False, default='Pending') # 'Pending', 'Approved', 'Open', 'Closed', 'Started', 'Completed'
     description = db.Column(db.String(2000), nullable=True)
     assigned_staff_id = db.Column(db.Integer, db.ForeignKey('staff_profiles.staff_id'), nullable=True)
     image_file = db.Column(db.String(100), nullable=False, default='default_trek.jpg')

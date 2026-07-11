@@ -1,0 +1,102 @@
+{% extends 'staffpages/staff_nav.html' %}
+
+{% block css3 %} <link rel='stylesheet' href="{{ url_for('static', filename='/css/staff/staff_trek.manage.css') }}"> {% endblock %}
+
+{% block title %}{{staff.name}} Treks{% endblock %}
+
+
+
+{% block main_content %}
+
+    <div class="wrapper">
+        <h1>{{ trek.trek_name }}</h1>
+        <div class="trek-information">
+            <h2>Trek Information</h2>
+            <div class="trek-info">
+                <div class="half-info">
+                    <div class="info-el">
+                        <div class="term">Location</div>
+                        <div class="value">{{ trek.location }}</div>
+                    </div>
+
+                    <div class="info-el">
+                        <div class="term">Duration</div>
+                        <div class="value">{{ trek.duration }}</div>
+                    </div>
+
+                    <div class="info-el">
+                        <div class="term">Difficulty</div>
+                        <div class="value">{{ trek.difficulty }}</div>
+                    </div>
+
+                    <div class="info-el">
+                        <div class="term">Last Booking Date</div>
+                        <div class="value">{{ trek.last_booking_date }}</div>
+                    </div>
+
+                    <div class="info-el">
+                        <div class="term">Start Date</div>
+                        <div class="value">{{ trek.start_date }}</div>
+                    </div>
+
+                    <div class="info-el">
+                        <div class="term">End Date</div>
+                        <div class="value">{{ trek.end_date }}</div>
+                    </div>
+
+                    <div class="info-el">
+                        <div class="term">Total Slots</div>
+                        <div class="value">{{ trek.total_slots }}</div>
+                    </div>
+                </div>
+                <form action="{{ url_for('staff_trek_manage', staff_id=staff.staff_id, trek_id=trek.trek_id) }}" method="get" class="half-info" id="slots-status-form">
+                    <div class="info-el">
+                        <label for="slots" class="term">Available Slots</label>
+                        <input type="number" id="slots" name="slots" value="{{ trek.available_slots }}">
+                    </div>
+
+                    <div class="info-el">
+                        <label for="status" class="term">Status</label>
+                        <select name="status" id="status" value="{{ trek.status }}">
+                            <option value="Open">Open</option>
+                            <option value="Closed">Closed</option>
+                        </select>
+                    </div>
+                    
+                </form>
+            </div>
+            <div class="description">
+                <div class="description_attribute">Description</div>
+                <div class="description_value">{{ trek.description }}</div>
+            </div>
+            <h2>Participants</h2>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone No</th>
+                    <th>Booking Date</th>
+                    <th>Status</th>
+                </tr>
+                {% for booking in active_bookings %}
+                <tr>
+                    <td>{{ booking.trekker.name }}</td>
+                    <td>{{ booking.trekker.email }}</td>
+                    <td>{{ booking.trekker.phone }}</td>
+                    <td>{{ booking.booking_date }}</td>
+                    <td>{{ booking.status }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <div class="btns">
+                <div class="start-complete">
+                    <a href="{{ url_for('staff_trek_manage', start=True, staff_id=staff.staff_id, trek_id=trek.trek_id) }}" class="btn">Mark As Started</a>
+                    <a href="{{ url_for('staff_trek_manage', complete=True, staff_id=staff.staff_id, trek_id=trek.trek_id) }}" class="btn">Mark As Completed</a>
+                </div>
+                <button type="submit" form="slots-status-form">Submit</button>
+            </div>
+            
+        </div>
+    </div>
+
+{% endblock %}

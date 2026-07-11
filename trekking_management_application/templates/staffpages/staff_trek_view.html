@@ -1,0 +1,92 @@
+{% extends 'staffpages/staff_nav.html' %}
+
+{% block css3 %} <link rel='stylesheet' href="{{ url_for('static', filename='/css/staff/staff_trek.manage.css') }}"> {% endblock %}
+
+{% block title %}{{staff.name}} Treks{% endblock %}
+
+
+
+{% block main_content %}
+
+    <div class="wrapper">
+        <h1>{{ trek.trek_name }}</h1>
+        <div class="trek-information">
+            <h2>Trek Information</h2>
+            <div class="trek-info">
+                <div class="half-info">
+
+                    <div class="info-el">
+                        <div class="term">Location</div>
+                        <div class="value">{{ trek.location }}</div>
+                    </div>
+
+                    <div class="info-el">
+                        <div class="term">Duration</div>
+                        <div class="value">{{ trek.duration }}</div>
+                    </div>
+
+                    <div class="info-el">
+                        <div class="term">Difficulty</div>
+                        <div class="value">{{ trek.difficulty }}</div>
+                    </div>
+
+                    <div class="info-el">
+                        <div class="term">Last Booking Date</div>
+                        <div class="value">{{ trek.last_booking_date }}</div>
+                    </div>
+
+                    <div class="info-el">
+                        <div class="term">Start Date</div>
+                        <div class="value">{{ trek.start_date }}</div>
+                    </div>
+
+                    <div class="info-el">
+                        <div class="term">End Date</div>
+                        <div class="value">{{ trek.end_date }}</div>
+                    </div>
+
+                    <div class="info-el">
+                        <div class="term">Total Slots</div>
+                        <div class="value">{{ trek.total_slots }}</div>
+                    </div>
+                </div>
+                <div class='half-info'>
+                    <div class="info-el">
+                        <div class="term">Available Slots</div>
+                        <div class="value">{{ trek.available_slots }}</div>
+                    </div>
+
+                    <div class="info-el">
+                        <div class="term">Status</div>
+                        <div class="value">{{ trek.status }}</div>
+                    </div>
+                </div>    
+            </div>
+            <div class="description">
+                <div class="description_attribute">Description</div>
+                <div class="description_value">{{ trek.description }}</div>
+            </div>
+            <h2>Participants</h2>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone No</th>
+                    <th>Booking Date</th>
+                    <th>Status</th>
+                </tr>
+                {% for booking in active_bookings %}
+                <tr>
+                    <td>{{ booking.trekker.name }}</td>
+                    <td>{{ booking.trekker.email }}</td>
+                    <td>{{ booking.trekker.phone }}</td>
+                    <td>{{ booking.booking_date }}</td>
+                    <td>{{ booking.status }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            
+        </div>
+    </div>
+
+{% endblock %}

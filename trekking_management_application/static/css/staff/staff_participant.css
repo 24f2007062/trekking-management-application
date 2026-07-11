@@ -1,0 +1,145 @@
+#participant-btn {
+    background-color: #3F5B24;
+    color: #F7F5B7;
+    font-weight: bolder;
+    border-radius: 5px; 
+}
+
+h1 {
+    color: #3F5B24;
+    margin-bottom: 2vh;
+}
+
+
+
+
+table {
+  width: 100%;               
+  border-collapse: collapse; 
+}
+
+th, td {
+  border: 1px solid #ccc;  
+  padding: 12px;             
+  text-align: left;      
+}
+
+th {
+  background-color: #f4f4f4; 
+}
+
+
+.action-btns {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.trek_history {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 12px 24px;
+  background: #E8AF52;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.trek_history:hover {
+  background-color: #e6be7c;
+}
+
+#serchtrek-and-addtrek {
+  display: flex; 
+  justify-content: space-between;
+  width: 100%;
+  background-color: cyan;
+  height: 10%;
+}
+
+#search-filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #ccc;
+  height: 50px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-top: 20px;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  width: 25%;
+}
+
+
+.filter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 20%;
+}
+
+#search-box {
+  height: 35px;
+  width: 90%;
+}
+
+#search-btn-t {
+  height: 35px;
+  width: 35px;
+  background-color: white;
+  border: 1px solid black;
+}
+
+.search-icon {
+  font-size: x-large;
+}
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+
+.label {
+  font-size: smaller;
+}
+
+#location, #difficulty, #status {
+  height: 25px;
+  background-color: #3F5B24;
+  border-radius: 5px;
+  color: white;
+}
+
+#filter-btn {
+  display: flex;
+  height: 35px;
+  width: 90px;
+  justify-content: space-evenly;
+  align-items: center;
+  border-radius: 5px;
+  background-color: #E8AF52;
+  font-weight: bolder;
+  border: none;
+}
+
+.filter-icon {
+  font-size: x-large;
+}
+
+.addtrek-rowcount {
+  display: flex;
+}
+
+.row-count {
+  background-color: white;
+  padding: 12px 24px;
+  margin-left: 50px;
+}

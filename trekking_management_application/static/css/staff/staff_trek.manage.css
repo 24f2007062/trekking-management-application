@@ -1,0 +1,102 @@
+#trek-btn {
+    background-color: #3F5B24;
+    color: #F7F5B7;
+    font-weight: bolder;
+    border-radius: 5px; 
+}
+
+.wrapper {
+    width: 100%;
+
+}
+
+.trek-information {
+    background-color: #f4f091;
+    width: 100%;
+    padding: 2%;
+    border-radius: 2%;
+}
+
+.trek-info {
+    display: flex;
+    width: 100%;
+    background-color:#F7F5B7;
+    padding: 2%;
+    justify-content: space-around;
+
+}
+
+.half-info {
+    width: 40%
+}
+
+.info-el {
+    display: flex;
+    justify-content: space-between;
+}
+
+.term, .description_attribute {
+    font-weight: bold;
+}
+
+.description {
+    margin: 25px;
+}
+
+
+table {
+    width: 100%;               
+    border-collapse: collapse; 
+}
+
+th, td {
+    border: 1px solid #ccc;  
+    padding: 12px;             
+    text-align: left;      
+}
+
+th {
+    background-color: #f4f4f4; 
+}
+
+.btns {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+} 
+
+.start-complete {
+    margin: 20px;
+    width: 30%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn {
+    text-decoration: none;
+    border: 2px solid #3F5B24;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    color: #3F5B24;
+}
+
+.btn:hover {
+    background-color: #3F5B24;
+    color: white;
+}
+
+
+button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    background: #E8AF52;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    margin: 20px;
+}
