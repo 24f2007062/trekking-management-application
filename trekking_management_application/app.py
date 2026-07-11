@@ -1,12 +1,17 @@
 from flask import Flask, render_template, request, redirect, url_for
+import os
+from werkzeug.utils import secure_filename
 from datetime import datetime, date
 from models import *
+
 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///trekking_management.sqlite3'
 db.init_app(app)
 app.app_context().push()
+
+UPLOAD_FOLDER = os.path.join(app.root_path, 'static', 'images')
 
 # ROUTES
 # LOGIN AND REGISTER
@@ -138,10 +143,25 @@ def edit_trek(trek_id):
         trek.description = request.form['description']
         trek.assigned_staff_id = request.form['staff']
         trek.available_slots = int(trek.total_slots) - len(trek.bookings)
+        if 'img' in request.files:
+            file = request.files['img']
+            if file and file.filename != '':
+                # Clean the filename for safety
+                filename = secure_filename(file.filename)
+                
+                # Make sure the static/images directory exists on your computer
+                os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+                
+                # Create the full saving path: static/images/filename.jpg
+                file_path = os.path.join(UPLOAD_FOLDER, filename)
+                
+                # Save the file physically to your server disk
+                file.save(file_path)
+                
+                # Save the relative path (or just the filename) into your database column
+                trek.image_file = filename
 
         db.session.commit()
-        trek = Trek.query.filter_by(trek_id=trek_id).first()
-        print(trek.trek_id, trek.trek_name, trek.location, trek.difficulty, trek.duration, trek.total_slots, trek.available_slots, trek.start_date, trek.end_date, trek.status, trek.description, trek.assigned_staff)
         
         return redirect('/admin/trek')
 
