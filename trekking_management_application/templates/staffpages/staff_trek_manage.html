@@ -49,7 +49,7 @@
                         <div class="value">{{ trek.total_slots }}</div>
                     </div>
                 </div>
-                <form action="{{ url_for('staff_trek_manage', staff_id=staff.staff_id, trek_id=trek.trek_id) }}" method="get" class="half-info" id="slots-status-form">
+                <form action="{{ url_for('staff_trek_submit', staff_id=staff.staff_id, trek_id=trek.trek_id) }}" method="post" class="half-info" id="slots-status-form">
                     <div class="info-el">
                         <label for="slots" class="term">Available Slots</label>
                         <input type="number" id="slots" name="slots" value="{{ trek.available_slots }}">
@@ -90,10 +90,16 @@
             </table>
             <div class="btns">
                 <div class="start-complete">
-                    <a href="{{ url_for('staff_trek_manage', start=True, staff_id=staff.staff_id, trek_id=trek.trek_id) }}" class="btn">Mark As Started</a>
-                    <a href="{{ url_for('staff_trek_manage', complete=True, staff_id=staff.staff_id, trek_id=trek.trek_id) }}" class="btn">Mark As Completed</a>
+                    <form action="{{ url_for('staff_startTrek_button', staff_id=staff.staff_id, trek_id=trek.trek_id) }}" method="post">
+                        <button type="submit" name="start" value="Started" class="btn">Mark As Started</button>
+                    </form>
+                    
+                    <form action="{{ url_for('staff_completeTrek_button', staff_id=staff.staff_id, trek_id=trek.trek_id) }}" method="post">
+                        <button type="submit" name="complete" value="Completed" class="btn">Mark As Completed</a>
+                    </form>
+                    
                 </div>
-                <button type="submit" form="slots-status-form">Submit</button>
+                <button type="submit" form="slots-status-form" class="submit">Submit</button>
             </div>
             
         </div>

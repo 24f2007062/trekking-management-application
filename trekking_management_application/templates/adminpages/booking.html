@@ -56,9 +56,9 @@
                     <td>{{ booking.booking_date }}</td>
                     <td>{{ booking.status }}</td>
                     <td>
-                       <div class='action-btns'>
-                            <a class='cancel-btn' href="{{ url_for('admin_booking', booking_id=booking.booking_id) }}" style="{{ 'display:none;' if booking.status != 'Booked' }}">Cancel</a>
-                        </div> 
+                       <form class='action-btns' action="{{ url_for('admin_cancel_booking', booking_id=booking.booking_id) }}" method="post">
+                            <button class='cancel-btn' type="submit" name="book_status" value="Canceled" style="{{ 'display:none;' if booking.status != 'Booked' }}">Cancel</a>
+                        </form> 
                     </td>
                 </tr>
             {% endfor %}

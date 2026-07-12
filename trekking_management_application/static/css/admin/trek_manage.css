@@ -106,14 +106,14 @@ th {
 .filters {
   display: flex;
   flex-direction: column;
-  width: 25%;
+  width: 20%;
 }
 
 .label {
   font-size: smaller;
 }
 
-#location, #difficulty, #status {
+#location, #difficulty, #status, #staff {
   height: 25px;
   background-color: #3F5B24;
   border-radius: 5px;

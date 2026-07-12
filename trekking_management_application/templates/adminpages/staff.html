@@ -11,17 +11,17 @@
     <div id='status-query-btns'>
 
         <div class='pending-btn'>
-            <a href="{{ url_for('admin_staff', tab='Pending') }}" class="{{ 'active' if current_tab=='Pending' }} tab"> Pending</a>
+            <a href="{{ url_for('admin_staff', tab='Pending') }}" class="{{ 'active' if current_tab=='Pending' }} tab"> Pending {{ count[0] }}</a>
         </div>
         <div class='approved-btn'>
-            <a href="{{ url_for('admin_staff', tab='Approved') }}" class="{{ 'active' if current_tab=='Approved' }} tab"> Approved</a>
+            <a href="{{ url_for('admin_staff', tab='Approved') }}" class="{{ 'active' if current_tab=='Approved' }} tab"> Approved {{ count[1] }}</a>
         </div>
         <div class='blacklisted-btn'>
-            <a href="{{ url_for('admin_staff', tab='Blacklisted') }}" class="{{ 'active' if current_tab=='Blacklisted' }} tab"> Blacklisted</a>
+            <a href="{{ url_for('admin_staff', tab='Blacklisted') }}" class="{{ 'active' if current_tab=='Blacklisted' }} tab"> Blacklisted {{ count[2] }}</a>
         </div>
 
         <div class='all-btn'>
-            <a href="{{ url_for('admin_staff', tab='All') }}" class="{{ 'active' if current_tab=='All' }} tab">All</a>
+            <a href="{{ url_for('admin_staff', tab='All') }}" class="{{ 'active' if current_tab=='All' }} tab">All  {{ count[3] }}</a>
         </div>
 
     </div>
@@ -48,9 +48,9 @@
                     <td>{{ staff.phone }}</td>
                     <td>{{ staff.status }}</td>
                     <td>
-                       <div class='action-btns'>
-                            <a class='approve-staff-btn' style="{{ 'display: none;' if current_tab == 'Approved' else '' }}" href="{{ url_for('admin_staff', status='Approved', id=staff.staff_id) }}">Approve</a>
-                            <a class='reject-staff-btn' style="{{ 'display:none;' if current_tab=='Blacklisted' else '' }}" href="{{ url_for('admin_staff', status='Blacklisted', id=staff.staff_id) }}">Reject</a> 
+                       <form class='action-btns' action="{{ url_for('update_staff_status', staff_id=staff.staff_id) }}" method="post">
+                            <button type="submit" class='approve-staff-btn' name="status" value="Approved" style="{{ 'display: none;' if current_tab == 'Approved' else '' }}">Approve</button>
+                            <button type="submit" class='reject-staff-btn' name="status" value="Blacklisted" style="{{ 'display:none;' if current_tab=='Blacklisted' else '' }}">Reject</button> 
                         </div> 
                     </td>
                 </tr>

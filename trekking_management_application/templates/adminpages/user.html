@@ -50,10 +50,10 @@
                     <td>{{ user.completed_bookings() | length }}</td>
                     <td>{{ 'Blacklisted' if user.is_blacklisted else 'Active' }}</td>
                     <td>
-                       <div class='action-btns'>
-                            <a href="{{ url_for('admin_staff') }}" style="{{ 'display:none;' if not user.is_blacklisted }}">Active</a>
-                            <a href="{{ url_for('admin_staff') }}" style="{{'display:none' if user.is_blacklisted}}">Blacklist</a>
-                        </div> 
+                       <form class='action-btns' action="{{ url_for('update_user_status', user_id=user.user_id) }}" method="post">
+                            <button type="submit" name="status" class="active" value ="False" style="{{ 'display:none;' if not user.is_blacklisted }}">Active</button>
+                            <button type="submit" name="status" class="blacklist" value="True" style="{{'display:none' if user.is_blacklisted}}">Blacklist</button>
+                       </form> 
                     </td>
                 </tr>
             {% endfor %}

@@ -8,7 +8,7 @@
 
 <div id='wrapper'>
     <h1>Add New Trek</h1>
-    <form action="{{ url_for('add_trek') }}" method='post'>
+    <form action="{{ url_for('add_trek') }}" method='post' enctype="multipart/form-data">
         
         <div class='half_form'>
 
@@ -31,7 +31,7 @@
             <label for="slots">Total Slot</label>
             <input type="number" id="slot" name="slot" placeholder="Enter total slot" required>
 
-            <label for="img">Choose Image:</label>
+            <label for="img">Choose Image</label>
             <input type="file" id="img" name="img" accept="image/*">
 
         </div>
@@ -60,6 +60,7 @@
                 <option value="Approved">Approved</option>
                 <option value="Open">Open</option>
                 <option value="Closed">Closed</option>
+                <option value="Started">Started</option>
                 <option value="Completed">Completed</option>
             </select>
 

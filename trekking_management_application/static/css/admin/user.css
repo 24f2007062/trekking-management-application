@@ -98,3 +98,17 @@ th {
   border-radius: 5px;
   color: white;
 }
+
+
+.active, .blacklist {
+  padding: 7px;
+  border-radius: 5px;
+  color: white;
+}
+
+.active {
+  background-color: darkgreen;
+}
+.blacklist {
+  background-color: darkred;
+}

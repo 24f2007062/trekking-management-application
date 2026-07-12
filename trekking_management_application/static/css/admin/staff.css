@@ -69,3 +69,17 @@ h1 {
   color: #3F5B24;
   margin-bottom: 2vh;
 }
+
+.approve-staff-btn {
+  background-color: green;
+  padding: 7px;
+  border-radius: 5px;
+  color: white;
+}
+
+.reject-staff-btn {
+  background-color: darkred;
+  padding: 7px;
+  border-radius: 5px;
+  color: white;
+}

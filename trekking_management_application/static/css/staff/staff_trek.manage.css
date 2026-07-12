@@ -80,6 +80,7 @@ th {
     align-items: center;
     padding: 10px;
     color: #3F5B24;
+    background-color: transparent;
 }
 
 .btn:hover {
@@ -88,7 +89,7 @@ th {
 }
 
 
-button {
+.submit {
     display: inline-flex;
     align-items: center;
     justify-content: center;

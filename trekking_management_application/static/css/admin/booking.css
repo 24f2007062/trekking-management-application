@@ -93,3 +93,11 @@ th {
 .filter-icon {
   font-size: x-large;
 }
+
+.cancel-btn {
+  padding: 7px;
+  background-color: darkred;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+}
