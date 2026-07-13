@@ -187,6 +187,9 @@ admin123
 
 ---
 
+# Staff and User Login
+Happens through login page or Registration page
+
 # Project Structure
 
 ```
