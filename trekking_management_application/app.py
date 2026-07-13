@@ -1,12 +1,16 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session, abort # marked session, abort
 from datetime import datetime, date
+from flask import session # marked
+from security import login_user_session, logout_user_session, admin_required, staff_required, user_required #marked
+
 from werkzeug.utils import secure_filename
 import os
 from models import *
 
 UPLOAD_FOLDER = "static/images"
 
-app = Flask(__name__)
+app = Flask(__name__) 
+app.config["SECRET_KEY"] = "Trek@2026$MAD_Project#9Xv8Q"  # marked
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///trekking_management.sqlite3'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 db.init_app(app)
@@ -29,15 +33,32 @@ def login():
         staff = StaffProfile.query.filter_by(email=email).first()
         admin = User.query.filter_by(email=email, role='Admin').first()
         if user and user.password == password:
+
+            login_user_session(user.user_id, "User") # marked
+
             return redirect(url_for('user_dashboard', user_id=user.user_id))
         
         elif staff and staff.password == password:
+
+            login_user_session(staff.staff_id, "Staff") # marked
+
             return redirect(url_for('staff_dashboard', staff_id=staff.staff_id))
 
         elif admin and admin.password == password:
+
+            login_user_session(admin.user_id, "Admin")  #marked
+
             return redirect(url_for('admin_dashboard'))
     
     return render_template('login.html')
+
+@app.route("/logout")  #marked whole route
+def logout():
+
+    logout_user_session()
+
+    return redirect(url_for("login"))
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register_form():
@@ -64,6 +85,7 @@ def register_form():
 # ADMIN PART
 
 @app.route('/admin/dashboard')
+@admin_required
 def admin_dashboard():
     trek_count=Trek.query.filter(Trek.status.in_(['Open', 'Closed', 'Started'])).count()
     user_count=User.query.filter_by(role='User', is_blacklisted=False).count()
@@ -76,6 +98,7 @@ def admin_dashboard():
 
 
 @app.route('/admin/trek')
+@admin_required
 def admin_trek_manager():
     staffs = StaffProfile.query.filter_by(status='Approved').all()
     locations = db.session.scalars(db.select(Trek.location).distinct()).all()
@@ -107,6 +130,7 @@ def admin_trek_manager():
     return render_template('adminpages/trek.html', treks=treks, locations=locations, count=count, staffs=staffs)
 
 @app.route('/admin/trek/delete/<int:trek_id>', methods=['POST'])
+@admin_required
 def delete_trek(trek_id):
     del_trek=Trek.query.filter_by(trek_id=trek_id).first()
     
@@ -118,6 +142,7 @@ def delete_trek(trek_id):
 
 
 @app.route('/admin/trek/<int:trek_id>/view')
+@admin_required
 def view_trek(trek_id):
     trek=Trek.query.filter_by(trek_id=trek_id).first()
     
@@ -129,6 +154,7 @@ def view_trek(trek_id):
     return render_template('adminpages/view_trek.html', trek=trek, count_booking=count_booking, active_bookings=active_bookings)
 
 @app.route('/admin/trek/<int:trek_id>/edit', methods=['GET', 'POST'])
+@admin_required
 def edit_trek(trek_id):
     if request.method=='POST':
         trek = Trek.query.filter_by(trek_id=trek_id).first()
@@ -170,6 +196,7 @@ def edit_trek(trek_id):
     return render_template('adminpages/edit_trek.html', trek=trek, staffs=staffs)
 
 @app.route('/admin/trek/add', methods=['GET', 'POST'])
+@admin_required
 def add_trek():
     if request.method=='POST':
         trek_name = request.form['trek_name']
@@ -210,6 +237,7 @@ def add_trek():
 
 
 @app.route('/admin/staff')
+@admin_required
 def admin_staff():
     current_tab = request.args.get('tab', 'All')
     search = request.args.get('search')
@@ -240,6 +268,7 @@ def admin_staff():
     return render_template('adminpages/staff.html', staffs=staffs, current_tab=current_tab, count=count)
 
 @app.route('/admin/staff/<int:staff_id>', methods=['POST'])
+@admin_required
 def update_staff_status(staff_id):
     staff = StaffProfile.query.filter_by(staff_id=staff_id).first()
     status = request.form.get('status')
@@ -251,6 +280,7 @@ def update_staff_status(staff_id):
 
 
 @app.route('/admin/users')
+@admin_required
 def admin_user():
     search = request.args.get('search')
     status = request.args.get('status')
@@ -271,6 +301,7 @@ def admin_user():
     return render_template('adminpages/user.html', users=users)
 
 @app.route('/admin/user/<int:user_id>', methods=['POST'])
+@admin_required
 def update_user_status(user_id):
     user = User.query.filter_by(user_id=user_id).first()
     status = request.form.get('status')
@@ -284,6 +315,7 @@ def update_user_status(user_id):
     return redirect(url_for('admin_user'))
 
 @app.route('/admin/booking')
+@admin_required
 def admin_booking():
     search = request.args.get('search')
     trek = request.args.get('trek')
@@ -307,6 +339,7 @@ def admin_booking():
 
 
 @app.route('/admin/booking/<int:booking_id>', methods=['POST'])
+@admin_required
 def admin_cancel_booking(booking_id):
     book_status = request.form['book_status']
 
@@ -325,14 +358,18 @@ def admin_cancel_booking(booking_id):
 # USER PART
 
 @app.route('/user/<int:user_id>/dashboard')
+@user_required
 def user_dashboard(user_id):
     user = User.query.filter(User.is_blacklisted==False, User.user_id==user_id, User.role=='User').first()
-
-
-    return render_template('userpages/dashboard.html', user=user)
+    open_trek_count = Trek.query.filter_by(status='Open').count()
+    my_active_trek_count = Trek.query.join(Booking, Trek.trek_id==Booking.trek_id).filter(Booking.status=='Booked', Booking.user_id==user_id, Trek.status.in_(['Open', 'Closed', 'Started'])).count()
+    my_bookings_count = Booking.query.filter_by(status='Booked', user_id=user_id).count()
+    open_trek = Trek.query.filter_by(status='Open').limit(5).all()
+    return render_template('userpages/dashboard.html', user=user, open_trek_count=open_trek_count, my_active_trek_count=my_active_trek_count, my_bookings_count=my_bookings_count, open_trek=open_trek)
 
 
 @app.route('/user/<int:user_id>/trek')
+@user_required
 def user_trek(user_id):
     user = User.query.filter(User.user_id==user_id, User.role=='User', User.is_blacklisted==False).first()
     active_trek = Booking.query.join(User, User.user_id==Booking.user_id).join(Trek, Trek.trek_id==Booking.trek_id).filter(Booking.user_id==user_id, Trek.status.in_(['Open', 'Closed', 'Started']), User.role=="User", Booking.status=='Booked').all()
@@ -341,6 +378,7 @@ def user_trek(user_id):
     return render_template('userpages/my_trek.html', user=user, active_trek=active_trek)
 
 @app.route('/user/<int:user_id>/browse_trek')
+@user_required
 def browse_trek(user_id):
     user = User.query.filter_by(user_id=user_id, role='User', is_blacklisted=False).first()
     search = request.args.get('search')
@@ -370,6 +408,7 @@ def browse_trek(user_id):
 
 
 @app.route('/user/<int:user_id>/trek/<int:trek_id>/view')
+@user_required
 def user_view_trek(user_id, trek_id):
     user = User.query.filter_by(user_id=user_id, role='User', is_blacklisted=False).first()
     trek = Trek.query.filter_by(trek_id=trek_id).first()
@@ -378,6 +417,7 @@ def user_view_trek(user_id, trek_id):
     return render_template('userpages/view_trek.html', user=user, trek=trek, booking=booking, current_date=current_date)
 
 @app.route('/user/<int:user_id>/trek/<int:trek_id>/book', methods=['POST'])
+@user_required
 def book_trek(user_id, trek_id):
     trek = Trek.query.filter_by(trek_id=trek_id).first()
 
@@ -396,6 +436,7 @@ def book_trek(user_id, trek_id):
     return redirect(url_for('browse_trek', user_id=user_id))
 
 @app.route('/user/<int:user_id>/trek/<int:trek_id>/cancel_booking', methods=["POST"])
+@user_required
 def cancel_booking(user_id, trek_id):
     booking = Booking.query.filter_by(user_id=user_id, trek_id=trek_id, status='Booked').first()
     if booking:
@@ -408,12 +449,14 @@ def cancel_booking(user_id, trek_id):
 
 
 @app.route('/user/<int:user_id>/bookings')
+@user_required
 def user_bookings(user_id):
     user = User.query.filter_by(user_id=user_id, role='User', is_blacklisted=False).first()
     bookings = Booking.query.join(User, User.user_id==Booking.user_id).join(Trek, Trek.trek_id==Booking.trek_id).filter(User.user_id==user_id).all()
     return render_template('userpages/user_booking.html', bookings=bookings, user=user)
 
 @app.route('/user/<int:user_id>/history')
+@user_required
 def user_history(user_id):
     user = User.query.filter_by(user_id=user_id, role='User', is_blacklisted=False).first()
     completed_treks = Booking.query.join(Trek, Trek.trek_id==Booking.trek_id).filter(Booking.user_id==user_id, Trek.status=='Completed').all()
@@ -423,6 +466,7 @@ def user_history(user_id):
 # STAFF PART 
 
 @app.route('/staff/<int:staff_id>/dashboard')
+@staff_required
 def staff_dashboard(staff_id):
     staff = StaffProfile.query.filter_by(staff_id=staff_id, status='Approved').first()
 
@@ -444,6 +488,7 @@ def staff_dashboard(staff_id):
     return render_template('staffpages/dashboard.html', staff=staff, Treklist=Treklist, participants=participants)
 
 @app.route('/staff/<int:staff_id>/trek')
+@staff_required
 def staff_trek(staff_id):
     staff = StaffProfile.query.filter_by(staff_id=staff_id, status='Approved').first()
     active_treks = Trek.query.filter(Trek.assigned_staff_id == staff_id, Trek.status.in_(['Approved', 'Open', 'Closed', 'Started'])).all()
@@ -461,6 +506,7 @@ def staff_trek(staff_id):
     return render_template('staffpages/trek.html', staff=staff, active_treks=active_treks)
 
 @app.route('/staff/<int:staff_id>/trek/<int:trek_id>/manage', methods=['GET', 'POST'])
+@staff_required
 def staff_trek_manage(staff_id=None, trek_id=None):
     slots = request.args.get('slots')
     status = request.args.get('status')
@@ -491,6 +537,7 @@ def staff_trek_manage(staff_id=None, trek_id=None):
     return render_template('staffpages/staff_trek_manage.html', staff=staff, trek=trek, active_bookings=active_bookings)
 
 @app.route('/staff/<int:staff_id>/trek/<int:trek_id>/submit', methods=['POST'])
+@staff_required
 def staff_trek_submit(staff_id, trek_id):
     slots = int(request.form.get('slots'))
     status = request.form.get('status')
@@ -504,6 +551,7 @@ def staff_trek_submit(staff_id, trek_id):
     return redirect(url_for('staff_trek', staff_id=staff_id))
 
 @app.route('/staff/<int:staff_id>/trek/<int:trek_id>/start', methods=['POST'])
+@staff_required
 def staff_startTrek_button(staff_id, trek_id):
     trek=Trek.query.filter_by(trek_id=trek_id).first()
     if request.form['start']:
@@ -512,6 +560,7 @@ def staff_startTrek_button(staff_id, trek_id):
     return redirect(url_for('staff_trek', staff_id=staff_id))
 
 @app.route('/staff/<int:staff_id>/trek/<int:trek_id>/complete', methods=['POST'])
+@staff_required
 def staff_completeTrek_button(staff_id, trek_id):
     trek = Trek.query.filter_by(trek_id=trek_id).first()
     if request.form['complete']:
@@ -520,6 +569,7 @@ def staff_completeTrek_button(staff_id, trek_id):
     return redirect(url_for('staff_trek', staff_id=staff_id))
 
 @app.route('/staff/<int:staff_id>/trek_history')
+@staff_required
 def staff_trek_history(staff_id):
     staff = StaffProfile.query.filter_by(staff_id=staff_id, status='Approved').first()
     locations = Trek.query.filter_by(assigned_staff_id=staff_id, status='Completed').all()
@@ -543,6 +593,7 @@ def staff_trek_history(staff_id):
     return render_template('staffpages/staff_trek_history.html', staff=staff, completed_treks=completed_treks, locations=locations)
 
 @app.route('/staff/<int:staff_id>/trek_history/<int:trek_id>/view_trek')
+@staff_required
 def staff_trek_view(staff_id, trek_id):
 
     staff = StaffProfile.query.filter_by(staff_id=staff_id, status='Approved').first()
@@ -555,6 +606,7 @@ def staff_trek_view(staff_id, trek_id):
     return render_template('staffpages/staff_trek_view.html',staff=staff, trek=trek, active_bookings=active_bookings)
 
 @app.route('/staff/<int:staff_id>/participants')
+@staff_required
 def staff_participant(staff_id):
     staff = StaffProfile.query.filter_by(staff_id=staff_id, status='Approved').first()
     query = (
@@ -585,11 +637,22 @@ def staff_participant(staff_id):
 ##########################################################################################################################################
 #  CLOSING THE BOOKING WHENT HE LAST BOOKING DATE IS PASSED
 def trek_close_after_last_booking_date():
-    for trek in Trek.query.filter(Trek.last_booking_date < date.today()):
+    for trek in Trek.query.filter(Trek.last_booking_date < date.today()).all():
         trek.status = 'Closed'
-        db.session.commit()
+    for trek in Trek.query.filter( Trek.end_date <= date.today()).all():
+        trek.status = 'Completed'
+        for booking in trek.bookings:
+            booking.status = 'Completed'
+    for trek in Trek.query.filter_by(status='Completed').all():
+        for booking in trek.bookings:
+            booking.status = 'Completed'
+    db.session.commit()
 
 trek_close_after_last_booking_date()
+
+@app.before_request
+def update_trek_statuses():
+    trek_close_after_last_booking_date()
 
 @app.route('/testing')
 def testing():

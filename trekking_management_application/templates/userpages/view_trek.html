@@ -73,16 +73,17 @@
             <div class="description_attribute">Description</div>
             <div class="description_value">{{ trek.description }}</div>
         </div>
-        {% if current_date <= trek.last_booking_date %}
+        
         {% if booking %}
-        <form action="{{ url_for('cancel_booking', trek_id=trek.trek_id, user_id=user.user_id) }}" method="post" class="user-booking">
-            <button type="submit" value="Book" id="cancel">Cancel Booking</button>
-        </form>
+            <form action="{{ url_for('cancel_booking', trek_id=trek.trek_id, user_id=user.user_id) }}" method="post" class="user-booking">
+                <button type="submit" value="Book" id="cancel">Cancel Booking</button>
+            </form>
         {% else %}
-        <form action="{{ url_for('book_trek', trek_id=trek.trek_id, user_id=user.user_id) }}" method="post" class="user-booking">
-            <button type="submit" value="Book" id="book">Book Now</button>
-        </form>
-        {% endif %}
+            {% if current_date <= trek.last_booking_date %}
+                <form action="{{ url_for('book_trek', trek_id=trek.trek_id, user_id=user.user_id) }}" method="post" class="user-booking">
+                    <button type="submit" value="Book" id="book">Book Now</button>
+                </form>
+            {% endif %}
         {% endif %}
     </div>
 

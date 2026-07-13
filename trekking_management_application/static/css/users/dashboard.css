@@ -15,7 +15,7 @@ h1, h2 {
 }
 
 .card {
-    width: 22%;
+    width: 30%;
     height: 20vh;
     display: flex;
     justify-content: space-evenly;
