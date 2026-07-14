@@ -29,16 +29,22 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-        user = User.query.filter_by(email=email).first()
+        user = User.query.filter_by(email=email, role='User').first()
         staff = StaffProfile.query.filter_by(email=email).first()
         admin = User.query.filter_by(email=email, role='Admin').first()
         if user and user.password == password:
-
+            if user.is_blacklisted:
+                abort(403)
             login_user_session(user.user_id, "User") # marked
 
             return redirect(url_for('user_dashboard', user_id=user.user_id))
         
         elif staff and staff.password == password:
+            if staff.status == "Pending":
+                abort(403)
+
+            if staff.status == "Blacklisted":
+                abort(403)
 
             login_user_session(staff.staff_id, "Staff") # marked
 
@@ -284,7 +290,7 @@ def update_staff_status(staff_id):
 def admin_user():
     search = request.args.get('search')
     status = request.args.get('status')
-    query = User.query
+    query = User.query.filter_by(role='User')
     users =  query.all()
     if search:
         if search.isdigit():
@@ -648,7 +654,6 @@ def trek_close_after_last_booking_date():
             booking.status = 'Completed'
     db.session.commit()
 
-trek_close_after_last_booking_date()
 
 @app.before_request
 def update_trek_statuses():
